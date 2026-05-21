@@ -1,0 +1,36 @@
+body {
+    display: grid;
+    place-items:center;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    background-color: #222021;
+    color: white;
+    user-select: none;
+    position: relative;
+}
+
+.main {
+    display: flex;
+    gap: 200px;
+}
+
+.left h3 {
+    text-align: center;
+    font-size: 30px;
+    margin-bottom: 30px;
+}
+
+.biscuit-image {
+    width: 300px
+}
+
+.biscuit-image:hover {
+    opacity: 0.9;
+    cursor: pointer;
+}
+
+.biscuit-image:active {
+    opacity: 0.8;
+    transform: scale(1.02);
+}
