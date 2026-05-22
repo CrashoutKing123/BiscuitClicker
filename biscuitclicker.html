@@ -4,16 +4,103 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Biscuit Clicker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="biscuitclicker.css">
 </head>
 <body>
-    <section>
-        <div class="main">
-            <div class="left">
-                <h3>Points: <span class="point-cost">0</span></h3>
-                <img src="b4842fc5e82ce3fd5d6fb074a720f938586a7837-removebg-preview.png" alt="" srcset="" class="biscuit-image" onclick="incrementPoints()" draggable="false">
+    <div class="main">
+        <div class="left-section">
+            <div class="left-content">
+                <div class="bakery-name-container" onclick="openNamingModal()">
+                    <span id="bakery-name">Power Turtle</span>'s bakery
+                </div>
+
+                <h3><span class="point-cost">0</span> biscuits</h3>
+                <p class="biscuit-rate">per second: <span id="pps-text">0</span></p>
+                <div class="biscuit-container">
+                    <img src="b4842fc5e82ce3fd5d6fb074a720f938586a7837-removebg-preview.png" alt="" srcset="" class="biscuit-image" onclick="incrementPoints()" draggable="false">
+                </div>
             </div>
-    </section>
+        </div>
+        
+        <div class="separator"></div>
+        
+        <div class="middle-section">
+        </div>
+        
+        <div class="separator"></div>
+        
+        <div class="right-section">
+            <div class="shop-header">Store</div>
+            
+            <div class="shop-item" id="shop-item-pointer-finger" onclick="buyPointerFinger()">
+                <div class="shop-item-icon-box">
+                    <img src="Adobe Express - file (1).png" alt="" class="shop-item-icon" draggable="false">
+                </div>
+                <div class="shop-item-details">
+                    <div class="item-name">
+                        <span class="mystery-name">???</span>
+                        <span class="real-name">Pointer Finger</span>
+                    </div>
+                    <div class="item-cost-row">
+                        <img src="b4842fc5e82ce3fd5d6fb074a720f938586a7837-removebg-preview.png" class="mini-biscuit-icon" alt="" draggable="false">
+                        <span id="pointer-finger-price">15</span>
+                    </div>
+                </div>
+                <div id="pointer-finger-count" class="item-counter-display">0</div>
+            </div>
+
+            <div class="shop-item" id="shop-item-elderly-man" onclick="buyElderlyMan()">
+                <div class="shop-item-icon-box">
+                    <img src="Untitled - May 21, 2026 at 18.32.34.png" alt="" class="shop-item-icon" draggable="false">
+                </div>
+                <div class="shop-item-details">
+                    <div class="item-name">
+                        <span class="mystery-name">???</span>
+                        <span class="real-name">Elderly man</span>
+                    </div>
+                    <div class="item-cost-row">
+                        <img src="b4842fc5e82ce3fd5d6fb074a720f938586a7837-removebg-preview.png" class="mini-biscuit-icon" alt="" draggable="false">
+                        <span id="elderly-man-price">100</span>
+                    </div>
+                </div>
+                <div id="elderly-man-count" class="item-counter-display">0</div>
+            </div>
+
+            <div class="shop-item" id="shop-item-agricultural-property" onclick="buyAgriculturalProperty()">
+                <div class="shop-item-icon-box">
+                    <img src="Untitled - May 21, 2026 at 18.50.43.png" alt="" class="shop-item-icon" draggable="false">
+                </div>
+                <div class="shop-item-details">
+                    <div class="item-name">
+                        <span class="mystery-name">???</span>
+                        <span class="real-name">Agricultural Property</span>
+                    </div>
+                    <div class="item-cost-row">
+                        <img src="b4842fc5e82ce3fd5d6fb074a720f938586a7837-removebg-preview.png" class="mini-biscuit-icon" alt="" draggable="false">
+                        <span id="agricultural-property-price">1100</span>
+                    </div>
+                </div>
+                <div id="agricultural-property-count" class="item-counter-display">0</div>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="naming-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h3>Name your bakery</h3>
+            <input type="text" id="bakery-name-input" maxlength="20" spellcheck="false" autocomplete="off">
+            <div class="modal-buttons">
+                <button onclick="confirmBakeryName()">Confirm</button>
+                <button onclick="randomBakeryName()">Random</button>
+                <button onclick="closeNamingModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
     <script src="biscuitclicker.js"></script>
 </body>
 </html>
