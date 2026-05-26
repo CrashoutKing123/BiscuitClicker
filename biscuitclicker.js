@@ -19,6 +19,11 @@ const agriculturalPropertyBaseCost = 1100;
 let agriculturalPropertyCurrentCost = agriculturalPropertyBaseCost;
 const agriculturalPropertyPPSContribution = 8.0; 
 
+let pitCount = 0;
+const pitBaseCost = 12000; 
+let pitCurrentCost = pitBaseCost;
+const pitPPSContribution = 47.0;
+
 function buyPointerFinger() {
     if (parsedPoint >= pointerFingerCurrentCost) {
         parsedPoint -= pointerFingerCurrentCost;
@@ -30,7 +35,7 @@ function buyPointerFinger() {
         calculateTotalPPS();
         updateShopUI(); 
     } else {
-        console.log("Not enough biscuits, lil bro!");
+        console.log("Not enough biscuits, lil bro");
     }
 }
 
@@ -60,7 +65,22 @@ function buyAgriculturalProperty() {
         calculateTotalPPS();
         updateShopUI();
     } else {
-        console.log("Acquiring farmland demands more biscuits!");
+        console.log("Acquiring an Agricultural Property demands more biscuits!");
+    }
+}
+
+function buyPit() {
+    if (parsedPoint >= pitCurrentCost) {
+        parsedPoint -= pitCurrentCost;
+        point.innerHTML = Math.floor(parsedPoint);
+        
+        pitCount++;
+        pitCurrentCost = Math.ceil(pitBaseCost * Math.pow(1.15, pitCount));
+        
+        calculateTotalPPS();
+        updateShopUI();
+    } else {
+        console.log("Acquiring an awesome pit demands more biscuits!");
     }
 }
 
@@ -94,12 +114,23 @@ function checkUnlocks() {
             agPropertyElement.classList.add("fully-unlocked");
         }
     }
+
+    let pitElement = document.getElementById("shop-item-pit");
+    if (pitElement) {
+        if (totalBiscuitsBaked >= pitBaseCost) {
+            pitElement.classList.add("visible");
+        }
+        if (pitCount > 0) {
+            pitElement.classList.add("fully-unlocked");
+        }
+    }
 }
 
 function calculateTotalPPS() {
     pps = (pointerFingerCount * pointerFingerPPSContribution) + 
           (elderlyManCount * elderlyManPPSContribution) + 
-          (agriculturalPropertyCount * agriculturalPropertyPPSContribution);
+          (agriculturalPropertyCount * agriculturalPropertyPPSContribution) +
+          (pitCount * pitPPSContribution);
           
     ppsText.innerHTML = pps % 1 === 0 ? pps : pps.toFixed(1);
 }
@@ -119,6 +150,11 @@ function updateShopUI() {
     let agCountTag = document.getElementById("agricultural-property-count");
     if (agPriceTag) agPriceTag.innerHTML = agriculturalPropertyCurrentCost;
     if (agCountTag) agCountTag.innerHTML = agriculturalPropertyCount;
+
+    let pitPriceTag = document.getElementById("pit-price");
+    let pitCountTag = document.getElementById("pit-count");
+    if (pitPriceTag) pitPriceTag.innerHTML = pitCurrentCost;
+    if (pitCountTag) pitCountTag.innerHTML = pitCount;
 }
 
 function incrementPoints() {

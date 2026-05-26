@@ -319,7 +319,7 @@ body {
     filter: drop-shadow(0px 1px 1px rgba(0,0,0,0.6));
 }
 
-#pointer-finger-price, #elderly-man-price, #agricultural-property-price {
+#pointer-finger-price, #elderly-man-price, #agricultural-property-price, #pit-price {
     font-family: Arial, sans-serif;
     font-size: 13px;
     font-weight: 700;
