@@ -69,6 +69,24 @@ body {
     font-weight: 700;
 }
 
+.dev-mode-badge {
+    display: none;
+    position: absolute;
+    left: 50%;
+    top: calc(5% - 18px);
+    transform: translateX(-50%);
+    background-color: #d13434;
+    color: white;
+    font-family: Arial, sans-serif;
+    font-size: 9px;
+    font-weight: 900;
+    padding: 2px 6px;
+    border-radius: 4px;
+    letter-spacing: 1px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+    z-index: 6;
+}
+
 .left-content::before {
     content: "";
     position: absolute;
@@ -141,6 +159,68 @@ body {
 
 .middle-section {
     position: relative;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Regular Draggable Dev UI Panel */
+.dev-panel {
+    display: none;
+    position: absolute; 
+    top: 100px;
+    left: 300px;
+    background-color: #222;
+    border: 1px solid #444;
+    border-radius: 6px;
+    padding: 12px;
+    width: 340px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    z-index: 999;
+}
+
+.dev-panel-header {
+    background-color: #333;
+    color: #ccc;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    font-size: 13px;
+    padding: 8px;
+    margin: -12px -12px 12px -12px;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    cursor: move;
+    user-select: none;
+}
+
+.dev-panel-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.dev-panel-grid button {
+    background-color: #444;
+    border: 1px solid #555;
+    color: white;
+    padding: 8px;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.dev-panel-grid button:hover {
+    background-color: #555;
+    border-color: #666;
+}
+
+.dev-panel-grid button.wipe-btn {
+    background-color: #b03030;
+    border-color: #c23838;
+}
+
+.dev-panel-grid button.wipe-btn:hover {
+    background-color: #c23838;
 }
 
 .right-section {
@@ -240,6 +320,50 @@ body {
     letter-spacing: 1px;
 }
 
+.store-selector {
+    display: flex;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 4px 8px;
+    border-bottom: 2px solid #2a170c;
+}
+
+.store-tab {
+    background: none;
+    border: none;
+    color: #888;
+    font-family: 'Merriweather', serif;
+    font-weight: 900;
+    font-size: 12px;
+    cursor: pointer;
+    padding: 4px 12px;
+    margin: 0 6px;
+    letter-spacing: 0.5px;
+    transition: color 0.1s, text-shadow 0.1s;
+}
+
+.store-tab.active {
+    color: #fff;
+    text-shadow: 0px 0px 5px rgba(255, 255, 255, 0.6);
+}
+
+#store-sell.active {
+    color: #e54e4e;
+    text-shadow: 0px 0px 5px rgba(229, 78, 78, 0.6);
+}
+
+.shop-item.selling-active #pointer-finger-price,
+.shop-item.selling-active #elderly-man-price,
+.shop-item.selling-active #agricultural-property-price,
+.shop-item.selling-active #pit-price,
+.shop-item.selling-active #assemblyLine-price {
+    color: #e54e4e;
+}
+
+.shop-item.selling-active:hover {
+    background-color: rgba(229, 78, 78, 0.05);
+}
+
 .shop-item {
     display: none; 
     position: relative;
@@ -319,7 +443,7 @@ body {
     filter: drop-shadow(0px 1px 1px rgba(0,0,0,0.6));
 }
 
-#pointer-finger-price, #elderly-man-price, #agricultural-property-price, #pit-price {
+#pointer-finger-price, #elderly-man-price, #agricultural-property-price, #pit-price, #assemblyLine-price {
     font-family: Arial, sans-serif;
     font-size: 13px;
     font-weight: 700;
