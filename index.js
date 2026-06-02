@@ -5,9 +5,8 @@ let pps = 0;
 let totalBiscuitsBaked = 0; 
 let devModeActivated = false;
 let isWiping = false;
-let storeMode = "buy"; // Tracks whether player is in "buy" or "sell" tab
+let storeMode = "buy";
 
-// Item Configurations
 let pointerFingerCount = 0;
 const pointerFingerBaseCost = 15;
 let pointerFingerCurrentCost = pointerFingerBaseCost;
@@ -33,7 +32,7 @@ const assemblyLineBaseCost = 130000;
 let assemblyLineCurrentCost = assemblyLineBaseCost;
 const assemblyLinePPSContribution = 260.0;
 
-// Giant Number Formats Definition Array
+// cool big number stuff
 const formats = [
     { value: 1e303, symbol: " centillion" },
     { value: 1e300, symbol: " novemnonagintillion" },
@@ -182,7 +181,7 @@ function formatPPS(num) {
     return num.toFixed(1);
 }
 
-// Store Switching Tabs Configuration
+// store switching stuff
 function setStoreMode(mode) {
     if (isWiping) return;
     storeMode = mode;
@@ -207,7 +206,6 @@ function setStoreMode(mode) {
     updateShopUI();
 }
 
-// ROUTED ACTION HANDLERS
 function handlePointerFingerClick() {
     if (storeMode === "buy") buyPointerFinger();
     else sellPointerFinger();
@@ -230,7 +228,6 @@ function buyPointerFinger() {
 function sellPointerFinger() {
     if (isWiping) return;
     if (pointerFingerCount > 0) {
-        // Refund value corresponds to 25% of what the NEXT one would cost
         let refundAmount = Math.floor(pointerFingerCurrentCost * 0.25);
         parsedPoint += refundAmount;
         point.innerHTML = formatNumber(parsedPoint);
@@ -379,7 +376,7 @@ function sellAssemblyLine() {
     }
 }
 
-// Locks / Unlocks Logic
+//lock and unlock stuffffffffffffff
 function checkUnlocks() {
     let pointerFingerElement = document.getElementById("shop-item-pointer-finger");
     if (pointerFingerElement) {
@@ -438,7 +435,6 @@ function calculateTotalPPS() {
 }
 
 function updateShopUI() {
-    // If selling mode is active, display the refund price tag dynamically
     let displayFingerCost = storeMode === "buy" ? pointerFingerCurrentCost : Math.floor(pointerFingerCurrentCost * 0.25);
     let displayElderlyCost = storeMode === "buy" ? elderlyManCurrentCost : Math.floor(elderlyManCurrentCost * 0.25);
     let displayAgCost = storeMode === "buy" ? agriculturalPropertyCurrentCost : Math.floor(agriculturalPropertyCurrentCost * 0.25);
@@ -492,7 +488,6 @@ setInterval(() => {
     checkUnlocks(); 
 }, 1000 / ticksPerSecond);
 
-// Naming Modals Section
 const modal = document.getElementById("naming-modal");
 const nameInput = document.getElementById("bakery-name-input");
 const nameDisplay = document.getElementById("bakery-name");
@@ -540,7 +535,7 @@ nameInput.addEventListener("keydown", function(event) {
     }
 });
 
-// DEV CHEATS SECTION
+// dev cheetos
 function devAddBiscuits(amount) {
     if (isWiping) return;
     parsedPoint += amount;
@@ -622,7 +617,6 @@ function devWipeSave() {
     }, intervalTime);
 }
 
-// PANEL DRAGGING COMPONENT HANDLERS
 const dragPanel = document.getElementById("dev-tools-panel");
 const dragHeader = document.getElementById("dev-panel-header");
 
@@ -669,5 +663,4 @@ function setTranslate(xPos, yPos, el) {
     el.style.transform = `translate3d(${xPos}px, ${yPos}px, 0)`;
 }
 
-// Initial Kickoff
 updateShopUI();

@@ -163,7 +163,6 @@ body {
     box-sizing: border-box;
 }
 
-/* Regular Draggable Dev UI Panel */
 .dev-panel {
     display: none;
     position: absolute; 
