@@ -224,8 +224,33 @@ body {
 
 .right-section {
     position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
     background-color: rgba(0, 0, 0, 0.2);
     box-shadow: inset 0 0 50px rgba(0,0,0,0.5);
+}
+
+.store-content {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding-right: 6px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255,255,255,0.4) transparent;
+}
+
+.store-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.store-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.store-content::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.3);
+    border-radius: 999px;
 }
 
 .separator {
@@ -363,7 +388,10 @@ body {
 .shop-item.selling-active #tm-price,
 .shop-item.selling-active #wh-price,
 .shop-item.selling-active #stb-price,
-.shop-item.selling-active #qbc-price {
+.shop-item.selling-active #qbc-price,
+.shop-item.selling-active #ck-price,
+.shop-item.selling-active #gb-price,
+.shop-item.selling-active #rs-price {
     color: #e54e4e !important;
 }
 
@@ -450,7 +478,7 @@ body {
     filter: drop-shadow(0px 1px 1px rgba(0,0,0,0.6));
 }
 
-#pointer-finger-price, #elderly-man-price, #agricultural-property-price, #pit-price, #assemblyLine-price, #vault-price, #shrine-price, #witch-castle-price, #space-shuttle-price, #tm-price, #wh-price, #stb-price, #qbc-price {
+#pointer-finger-price, #elderly-man-price, #agricultural-property-price, #pit-price, #assemblyLine-price, #vault-price, #shrine-price, #witch-castle-price, #space-shuttle-price, #tm-price, #wh-price, #stb-price, #qbc-price, #ck-price, #gb-price, #rs-price {
     font-family: Arial, sans-serif;
     font-size: 13px;
     font-weight: 700;

@@ -50,7 +50,8 @@
                 <button id="store-sell" class="store-tab" onclick="setStoreMode('sell')">SELL</button>
             </div>
             
-            <div class="shop-item" id="shop-item-pointer-finger" onclick="handlePointerFingerClick()">
+            <div class="store-content">
+                <div class="shop-item" id="shop-item-pointer-finger" onclick="handlePointerFingerClick()">
                 <div class="shop-item-icon-box">
                     <img src="Adobe Express - file (1).png" alt="" class="shop-item-icon" draggable="false">
                 </div>
@@ -270,9 +271,59 @@
                 </div>
                 <div id="qbc-count" class="item-counter-display">0</div>
             </div>
-            
+
+            <div class="shop-item" id="shop-item-ck" onclick="handleCKClick()">
+                <div class="shop-item-icon-box">
+                    <img src="cookie-kaleidoscope.png" alt="" class="shop-item-icon" draggable="false">
+                </div>
+                <div class="shop-item-details">
+                    <div class="item-name">
+                        <span class="mystery-name">???</span>
+                        <span class="real-name">Cookie Kaleidoscope</span>
+                    </div>
+                    <div class="item-cost-row">
+                        <img src="b4842fc5e82ce3fd5d6fb074a720f938586a7837-removebg-preview.png" class="mini-biscuit-icon" alt="" draggable="false">
+                        <span id="ck-price">2100000000000000</span>
+                    </div>
+                </div>
+                <div id="ck-count" class="item-counter-display">0</div>
+            </div>
+
+            <div class="shop-item" id="shop-item-gb" onclick="handleGBClick()">
+                <div class="shop-item-icon-box">
+                    <img src="gambler.png" alt="" class="shop-item-icon" draggable="false">
+                </div>
+                <div class="shop-item-details">
+                    <div class="item-name">
+                        <span class="mystery-name">???</span>
+                        <span class="real-name">Gambler</span>
+                    </div>
+                    <div class="item-cost-row">
+                        <img src="b4842fc5e82ce3fd5d6fb074a720f938586a7837-removebg-preview.png" class="mini-biscuit-icon" alt="" draggable="false">
+                        <span id="gb-price">26000000000000000</span>
+                    </div>
+                </div>
+                <div id="gb-count" class="item-counter-display">0</div>
+            </div>
+
+            <div class="shop-item" id="shop-item-rs" onclick="handleRSClick()">
+                <div class="shop-item-icon-box">
+                    <img src="reality-synthesizer.png" alt="" class="shop-item-icon" draggable="false">
+                </div>
+                <div class="shop-item-details">
+                    <div class="item-name">
+                        <span class="mystery-name">???</span>
+                        <span class="real-name">Reality Synthesizer</span>
+                    </div>
+                    <div class="item-cost-row">
+                        <img src="b4842fc5e82ce3fd5d6fb074a720f938586a7837-removebg-preview.png" class="mini-biscuit-icon" alt="" draggable="false">
+                        <span id="rs-price">310000000000000000</span>
+                    </div>
+                </div>
+                <div id="rs-count" class="item-counter-display">0</div>
+            </div>
+            </div>
         </div>
-    </div>
 
     <div id="naming-modal" class="modal-overlay">
         <div class="modal-content">

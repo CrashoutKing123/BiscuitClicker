@@ -72,6 +72,21 @@ const qbcBaseCost = 170000000000000;
 let qbcCurrentCost = qbcBaseCost;
 const qbcPPSContribution = 430000000.0;
 
+let ckCount = 0;
+const ckBaseCost = 2100000000000000;
+let ckCurrentCost = ckBaseCost;
+const ckPPSContribution = 2900000000.0;
+
+let gbCount = 0;
+const gbBaseCost = 26000000000000000;
+let gbCurrentCost = gbBaseCost;
+const gbPPSContribution = 21000000000.0;
+
+let rsCount = 0;
+const rsBaseCost = 310000000000000000;
+let rsCurrentCost = rsBaseCost;
+const rsPPSContribution = 150000000000.0;
+
 const formats = [
     { value: 1e303, symbol: " centillion" },
     { value: 1e300, symbol: " novemnonagintillion" },
@@ -674,7 +689,7 @@ function buyQBC() {
     }
 }
 
-function sellSTB() {
+function sellQBC() {
     if (isWiping) return;
     if (qbcCount > 0) {
         let refundAmount = Math.floor(qbcCurrentCost * 0.25);
@@ -683,6 +698,108 @@ function sellSTB() {
 
         qbcCount--;
         qbcCurrentCost = Math.ceil(qbcBaseCost * Math.pow(1.15, qbcCount));
+
+        calculateTotalPPS();
+        updateShopUI();
+    }
+}
+
+function handleCKClick() {
+    if (storeMode === "buy") buyCK();
+    else sellCK();
+}
+
+function buyCK() {
+    if (isWiping) return;
+    if (parsedPoint >= ckCurrentCost) {
+        parsedPoint -= ckCurrentCost;
+        point.innerHTML = formatNumber(parsedPoint);
+        
+        ckCount++;
+        ckCurrentCost = Math.ceil(ckBaseCost * Math.pow(1.15, ckCount));
+        
+        calculateTotalPPS();
+        updateShopUI();
+    }
+}
+
+function sellCK() {
+    if (isWiping) return;
+    if (ckCount > 0) {
+        let refundAmount = Math.floor(ckCurrentCost * 0.25);
+        parsedPoint += refundAmount;
+        point.innerHTML = formatNumber(parsedPoint);
+
+        ckCount--;
+        ckCurrentCost = Math.ceil(ckBaseCost * Math.pow(1.15, ckCount));
+
+        calculateTotalPPS();
+        updateShopUI();
+    }
+}
+
+function handleGBClick() {
+    if (storeMode === "buy") buyGB();
+    else sellGB();
+}
+
+function buyGB() {
+    if (isWiping) return;
+    if (parsedPoint >= gbCurrentCost) {
+        parsedPoint -= gbCurrentCost;
+        point.innerHTML = formatNumber(parsedPoint);
+        
+        gbCount++;
+        gbCurrentCost = Math.ceil(gbBaseCost * Math.pow(1.15, gbCount));
+        
+        calculateTotalPPS();
+        updateShopUI();
+    }
+}
+
+function sellGB() {
+    if (isWiping) return;
+    if (gbCount > 0) {
+        let refundAmount = Math.floor(gbCurrentCost * 0.25);
+        parsedPoint += refundAmount;
+        point.innerHTML = formatNumber(parsedPoint);
+
+        gbCount--;
+        gbCurrentCost = Math.ceil(gbBaseCost * Math.pow(1.15, gbCount));
+
+        calculateTotalPPS();
+        updateShopUI();
+    }
+}
+
+function handleRSClick() {
+    if (storeMode === "buy") buyRS();
+    else sellRS();
+}
+
+function buyRS() {
+    if (isWiping) return;
+    if (parsedPoint >= rsCurrentCost) {
+        parsedPoint -= rsCurrentCost;
+        point.innerHTML = formatNumber(parsedPoint);
+        
+        rsCount++;
+        rsCurrentCost = Math.ceil(rsBaseCost * Math.pow(1.15, rsCount));
+        
+        calculateTotalPPS();
+        updateShopUI();
+    }
+}
+
+function sellRS() {
+    if (isWiping) return;
+    if (rsCount > 0) {
+        let refundAmount = Math.floor(rsCurrentCost * 0.25);
+        parsedPoint += refundAmount;
+        point.innerHTML = formatNumber(parsedPoint);
+
+        rsCount--;
+        rsCurrentCost = Math.ceil(rsBaseCost * Math.pow(1.15, rsCount));
 
         calculateTotalPPS();
         updateShopUI();
@@ -806,6 +923,33 @@ function checkUnlocks() {
         if (qbcCount > 0) qbcElement.classList.add("fully-unlocked");
         else qbcElement.classList.remove("fully-unlocked");
     }
+
+    let ckElement = document.getElementById("shop-item-ck");
+    if (ckElement) {
+        if (totalBiscuitsBaked >= ckBaseCost) ckElement.classList.add("visible");
+        else ckElement.classList.remove("visible");
+
+        if (ckCount > 0) ckElement.classList.add("fully-unlocked");
+        else ckElement.classList.remove("fully-unlocked");
+    }
+
+    let gbElement = document.getElementById("shop-item-gb");
+    if (gbElement) {
+        if (totalBiscuitsBaked >= gbBaseCost) gbElement.classList.add("visible");
+        else gbElement.classList.remove("visible");
+
+        if (gbCount > 0) gbElement.classList.add("fully-unlocked");
+        else gbElement.classList.remove("fully-unlocked");
+    }
+
+    let rsElement = document.getElementById("shop-item-rs");
+    if (rsElement) {
+        if (totalBiscuitsBaked >= rsBaseCost) rsElement.classList.add("visible");
+        else rsElement.classList.remove("visible");
+
+        if (rsCount > 0) rsElement.classList.add("fully-unlocked");
+        else rsElement.classList.remove("fully-unlocked");
+    }
 }
 
 function calculateTotalPPS() {
@@ -821,8 +965,11 @@ function calculateTotalPPS() {
           (tmCount * tmPPSContribution) +
           (whCount * whPPSContribution) +
           (stbCount * stbPPSContribution) +
-          (qbcCount * qbcPPSContribution) ;
-          
+          (qbcCount * qbcPPSContribution) +
+          (ckCount * ckPPSContribution) +
+          (gbCount * gbPPSContribution) +
+          (rsCount * rsPPSContribution);
+
     ppsText.innerHTML = formatPPS(pps);
 }
 
@@ -840,6 +987,9 @@ function updateShopUI() {
     let displayWHCost = storeMode === "buy" ? whCurrentCost : Math.floor(whCurrentCost * 0.25);
     let displaySTBCost = storeMode === "buy" ? stbCurrentCost : Math.floor(stbCurrentCost * 0.25);
     let displayQBCCost = storeMode === "buy" ? qbcCurrentCost : Math.floor(qbcCurrentCost * 0.25);
+    let displayCKCost = storeMode === "buy" ? ckCurrentCost : Math.floor(ckCurrentCost * 0.25);
+    let displayGBCost = storeMode === "buy" ? gbCurrentCost : Math.floor(gbCurrentCost * 0.25);
+    let displayRSCost = storeMode === "buy" ? rsCurrentCost : Math.floor(rsCurrentCost * 0.25);
 
     let fingerPriceTag = document.getElementById("pointer-finger-price");
     let fingerCountTag = document.getElementById("pointer-finger-count");
@@ -957,6 +1107,33 @@ function updateShopUI() {
         else qbcPriceTag.classList.remove("affordable");
     }
     if (qbcCountTag) qbcCountTag.innerHTML = qbcCount;
+
+    let ckPriceTag = document.getElementById("ck-price");
+    let ckCountTag = document.getElementById("ck-count");
+    if (ckPriceTag) {
+        ckPriceTag.innerHTML = formatNumber(displayCKCost);
+        if (storeMode === "buy" && parsedPoint >= ckCurrentCost) ckPriceTag.classList.add("affordable");
+        else ckPriceTag.classList.remove("affordable");
+    }
+    if (ckCountTag) ckCountTag.innerHTML = ckCount;
+
+    let gbPriceTag = document.getElementById("gb-price");
+    let gbCountTag = document.getElementById("gb-count");
+    if (gbPriceTag) {
+        gbPriceTag.innerHTML = formatNumber(displayGBCost);
+        if (storeMode === "buy" && parsedPoint >= gbCurrentCost) gbPriceTag.classList.add("affordable");
+        else gbPriceTag.classList.remove("affordable");
+    }
+    if (gbCountTag) gbCountTag.innerHTML = gbCount;
+
+    let rsPriceTag = document.getElementById("rs-price");
+    let rsCountTag = document.getElementById("rs-count");
+    if (rsPriceTag) {
+        rsPriceTag.innerHTML = formatNumber(displayRSCost);
+        if (storeMode === "buy" && parsedPoint >= rsCurrentCost) rsPriceTag.classList.add("affordable");
+        else rsPriceTag.classList.remove("affordable");
+    }
+    if (rsCountTag) rsCountTag.innerHTML = rsCount;
 }
 
 function incrementPoints() {
@@ -1086,7 +1263,16 @@ function devMaxUpgrades() {
     qbcCount += 10;
     qbcCurrentCost = Math.ceil(qbcBaseCost * Math.pow(1.15, qbcCount));
 
-    totalBiscuitsBaked = Math.max(totalBiscuitsBaked, qbcBaseCost);
+    ckCount += 10;
+    ckCurrentCost = Math.ceil(ckBaseCost * Math.pow(1.15, ckCount));
+
+    gbCount += 10;
+    gbCurrentCost = Math.ceil(gbBaseCost * Math.pow(1.15, gbCount));
+
+    rsCount += 10;
+    rsCurrentCost = Math.ceil(rsBaseCost * Math.pow(1.15, rsCount));
+
+    totalBiscuitsBaked = Math.max(totalBiscuitsBaked, BaseCost);
     
     calculateTotalPPS();
     updateShopUI();
@@ -1114,6 +1300,9 @@ function devWipeSave() {
     whCount = 0;
     stbCount = 0;
     qbcCount = 0;
+    ckCount = 0;
+    gbCount = 0;
+    rsCount = 0;
 
     pointerFingerCurrentCost = pointerFingerBaseCost;
     elderlyManCurrentCost = elderlyManBaseCost;
@@ -1128,6 +1317,9 @@ function devWipeSave() {
     whCurrentCost = whBaseCost;
     stbCurrentCost = stbBaseCost;
     qbcCurrentCost = qbcBaseCost;
+    ckCurrentCost = ckBaseCost;
+    gbCurrentCost = gbBaseCost;
+    rsCurrentCost = rsBaseCost;
 
     calculateTotalPPS();
     updateShopUI();
