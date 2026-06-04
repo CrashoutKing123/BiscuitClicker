@@ -355,8 +355,16 @@ body {
 .shop-item.selling-active #elderly-man-price,
 .shop-item.selling-active #agricultural-property-price,
 .shop-item.selling-active #pit-price,
-.shop-item.selling-active #assemblyLine-price {
-    color: #e54e4e;
+.shop-item.selling-active #assemblyLine-price,
+.shop-item.selling-active #vault-price,
+.shop-item.selling-active #shrine-price,
+.shop-item.selling-active #witch-castle-price,
+.shop-item.selling-active #space-shuttle-price,
+.shop-item.selling-active #tm-price,
+.shop-item.selling-active #wh-price,
+.shop-item.selling-active #stb-price,
+.shop-item.selling-active #qbc-price {
+    color: #e54e4e !important;
 }
 
 .shop-item.selling-active:hover {
@@ -442,13 +450,18 @@ body {
     filter: drop-shadow(0px 1px 1px rgba(0,0,0,0.6));
 }
 
-#pointer-finger-price, #elderly-man-price, #agricultural-property-price, #pit-price, #assemblyLine-price {
+#pointer-finger-price, #elderly-man-price, #agricultural-property-price, #pit-price, #assemblyLine-price, #vault-price, #shrine-price, #witch-castle-price, #space-shuttle-price, #tm-price, #wh-price, #stb-price, #qbc-price {
     font-family: Arial, sans-serif;
     font-size: 13px;
     font-weight: 700;
-    color: #6ed175;
+    color: #ffffff;
     text-shadow: 1px 1px 1px #000;
     line-height: 16px;
+    transition: color 0.1s ease;
+}
+
+.shop-item .affordable {
+    color: #6ed175 !important;
 }
 
 .item-counter-display {

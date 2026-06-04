@@ -32,7 +32,46 @@ const assemblyLineBaseCost = 130000;
 let assemblyLineCurrentCost = assemblyLineBaseCost;
 const assemblyLinePPSContribution = 260.0;
 
-// cool big number stuff
+let vaultCount = 0;
+const vaultBaseCost = 1400000;
+let vaultCurrentCost = vaultBaseCost;
+const vaultPPSContribution = 1400.0;
+
+let shrineCount = 0;
+const shrineBaseCost = 20000000;
+let shrineCurrentCost = shrineBaseCost;
+const shrinePPSContribution = 7800.0;
+
+let witchCastleCount = 0;
+const witchCastleBaseCost = 330000000;
+let witchCastleCurrentCost = witchCastleBaseCost;
+const witchCastlePPSContribution = 44000.0;
+
+let spaceShuttleCount = 0;
+const spaceShuttleBaseCost = 5100000000;
+let spaceShuttleCurrentCost = spaceShuttleBaseCost;
+const spaceShuttlePPSContribution = 260000.0;
+
+let tmCount = 0;
+const tmBaseCost = 75000000000;
+let tmCurrentCost = tmBaseCost;
+const tmPPSContribution = 1600000.0;
+
+let whCount = 0;
+const whBaseCost = 1000000000000;
+let whCurrentCost = whBaseCost;
+const whPPSContribution = 10000000.0;
+
+let stbCount = 0;
+const stbBaseCost = 14000000000000;
+let stbCurrentCost = stbBaseCost;
+const stbPPSContribution = 65000000.0;
+
+let qbcCount = 0;
+const qbcBaseCost = 170000000000000;
+let qbcCurrentCost = qbcBaseCost;
+const qbcPPSContribution = 430000000.0;
+
 const formats = [
     { value: 1e303, symbol: " centillion" },
     { value: 1e300, symbol: " novemnonagintillion" },
@@ -148,12 +187,12 @@ function formatNumber(num) {
             if (Math.round(divided * 1000) / 1000 >= 1000) {
                 if (i > 0) {
                     let nextDivided = floorNum / formats[i - 1].value;
-                    return nextDivided.toFixed(3) + formats[i - 1].symbol;
+                    return parseFloat(nextDivided.toFixed(3)) + formats[i - 1].symbol;
                 } else {
                     return "Infinity";
                 }
             }
-            return divided.toFixed(3) + formats[i].symbol;
+            return parseFloat(divided.toFixed(3)) + formats[i].symbol;
         }
     }
     return floorNum.toLocaleString();
@@ -162,7 +201,10 @@ function formatNumber(num) {
 function formatPPS(num) {
     if (!isFinite(num) || num >= 1e306) return "Infinity";
     if (num < 1000000) {
-        return num % 1 === 0 ? num.toLocaleString() : num.toFixed(1);
+        return parseFloat(num.toFixed(1)).toLocaleString(undefined, {
+            minimumFractionDigits: num % 1 === 0 ? 0 : 1,
+            maximumFractionDigits: 1
+        });
     }
     for (let i = 0; i < formats.length; i++) {
         if (num >= formats[i].value) {
@@ -170,18 +212,17 @@ function formatPPS(num) {
             if (Math.round(divided * 1000) / 1000 >= 1000) {
                 if (i > 0) {
                     let nextDivided = num / formats[i - 1].value;
-                    return nextDivided.toFixed(3) + formats[i - 1].symbol;
+                    return parseFloat(nextDivided.toFixed(3)) + formats[i - 1].symbol;
                 } else {
                     return "Infinity";
                 }
             }
-            return divided.toFixed(3) + formats[i].symbol;
+            return parseFloat(divided.toFixed(3)) + formats[i].symbol;
         }
     }
     return num.toFixed(1);
 }
 
-// store switching stuff
 function setStoreMode(mode) {
     if (isWiping) return;
     storeMode = mode;
@@ -376,7 +417,278 @@ function sellAssemblyLine() {
     }
 }
 
-//lock and unlock stuffffffffffffff
+function handleVaultClick() {
+    if (storeMode === "buy") buyVault();
+    else sellVault();
+}
+
+function buyVault() {
+    if (isWiping) return;
+    if (parsedPoint >= vaultCurrentCost) {
+        parsedPoint -= vaultCurrentCost;
+        point.innerHTML = formatNumber(parsedPoint);
+        
+        vaultCount++;
+        vaultCurrentCost = Math.ceil(vaultBaseCost * Math.pow(1.15, vaultCount));
+        
+        calculateTotalPPS();
+        updateShopUI();
+    }
+}
+
+function sellVault() {
+    if (isWiping) return;
+    if (vaultCount > 0) {
+        let refundAmount = Math.floor(vaultCurrentCost * 0.25);
+        parsedPoint += refundAmount;
+        point.innerHTML = formatNumber(parsedPoint);
+
+        vaultCount--;
+        vaultCurrentCost = Math.ceil(vaultBaseCost * Math.pow(1.15, vaultCount));
+
+        calculateTotalPPS();
+        updateShopUI();
+    }
+}
+
+function handleShrineClick() {
+    if (storeMode === "buy") buyShrine();
+    else sellShrine();
+}
+
+function buyShrine() {
+    if (isWiping) return;
+    if (parsedPoint >= shrineCurrentCost) {
+        parsedPoint -= shrineCurrentCost;
+        point.innerHTML = formatNumber(parsedPoint);
+        
+        shrineCount++;
+        shrineCurrentCost = Math.ceil(shrineBaseCost * Math.pow(1.15, shrineCount));
+        
+        calculateTotalPPS();
+        updateShopUI();
+    }
+}
+
+function sellShrine() {
+    if (isWiping) return;
+    if (shrineCount > 0) {
+        let refundAmount = Math.floor(shrineCurrentCost * 0.25);
+        parsedPoint += refundAmount;
+        point.innerHTML = formatNumber(parsedPoint);
+
+        shrineCount--;
+        shrineCurrentCost = Math.ceil(shrineBaseCost * Math.pow(1.15, shrineCount));
+
+        calculateTotalPPS();
+        updateShopUI();
+    }
+}
+
+function handleWitchCastleClick() {
+    if (storeMode === "buy") buyWitchCastle();
+    else sellWitchCastle();
+}
+
+function buyWitchCastle() {
+    if (isWiping) return;
+    if (parsedPoint >= witchCastleCurrentCost) {
+        parsedPoint -= witchCastleCurrentCost;
+        point.innerHTML = formatNumber(parsedPoint);
+        
+        witchCastleCount++;
+        witchCastleCurrentCost = Math.ceil(witchCastleBaseCost * Math.pow(1.15, witchCastleCount));
+        
+        calculateTotalPPS();
+        updateShopUI();
+    }
+}
+
+function sellWitchCastle() {
+    if (isWiping) return;
+    if (witchCastleCount > 0) {
+        let refundAmount = Math.floor(witchCastleCurrentCost * 0.25);
+        parsedPoint += refundAmount;
+        point.innerHTML = formatNumber(parsedPoint);
+
+        witchCastleCount--;
+        witchCastleCurrentCost = Math.ceil(witchCastleBaseCost * Math.pow(1.15, witchCastleCount));
+
+        calculateTotalPPS();
+        updateShopUI();
+    }
+}
+
+function handleSpaceShuttleClick() {
+    if (storeMode === "buy") buySpaceShuttle();
+    else sellSpaceShuttle();
+}
+
+function buySpaceShuttle() {
+    if (isWiping) return;
+    if (parsedPoint >= spaceShuttleCurrentCost) {
+        parsedPoint -= spaceShuttleCurrentCost;
+        point.innerHTML = formatNumber(parsedPoint);
+        
+        spaceShuttleCount++;
+        spaceShuttleCurrentCost = Math.ceil(spaceShuttleBaseCost * Math.pow(1.15, spaceShuttleCount));
+        
+        calculateTotalPPS();
+        updateShopUI();
+    }
+}
+
+function sellSpaceShuttle() {
+    if (isWiping) return;
+    if (spaceShuttleCount > 0) {
+        let refundAmount = Math.floor(spaceShuttleCurrentCost * 0.25);
+        parsedPoint += refundAmount;
+        point.innerHTML = formatNumber(parsedPoint);
+
+        spaceShuttleCount--;
+        spaceShuttleCurrentCost = Math.ceil(spaceShuttleBaseCost * Math.pow(1.15, spaceShuttleCount));
+
+        calculateTotalPPS();
+        updateShopUI();
+    }
+}
+
+function handleTMClick() {
+    if (storeMode === "buy") buyTM();
+    else sellTM();
+}
+
+function buyTM() {
+    if (isWiping) return;
+    if (parsedPoint >= tmCurrentCost) {
+        parsedPoint -= tmCurrentCost;
+        point.innerHTML = formatNumber(parsedPoint);
+        
+        tmCount++;
+        tmCurrentCost = Math.ceil(tmBaseCost * Math.pow(1.15, tmCount));
+        
+        calculateTotalPPS();
+        updateShopUI();
+    }
+}
+
+function sellTM() {
+    if (isWiping) return;
+    if (tmCount > 0) {
+        let refundAmount = Math.floor(tmCurrentCost * 0.25);
+        parsedPoint += refundAmount;
+        point.innerHTML = formatNumber(parsedPoint);
+
+        tmCount--;
+        tmCurrentCost = Math.ceil(tmBaseCost * Math.pow(1.15, tmCount));
+
+        calculateTotalPPS();
+        updateShopUI();
+    }
+}
+
+function handleWHClick() {
+    if (storeMode === "buy") buyWH();
+    else sellWH();
+}
+
+function buyWH() {
+    if (isWiping) return;
+    if (parsedPoint >= whCurrentCost) {
+        parsedPoint -= whCurrentCost;
+        point.innerHTML = formatNumber(parsedPoint);
+        
+        whCount++;
+        whCurrentCost = Math.ceil(whBaseCost * Math.pow(1.15, whCount));
+        
+        calculateTotalPPS();
+        updateShopUI();
+    }
+}
+
+function sellWH() {
+    if (isWiping) return;
+    if (whCount > 0) {
+        let refundAmount = Math.floor(whCurrentCost * 0.25);
+        parsedPoint += refundAmount;
+        point.innerHTML = formatNumber(parsedPoint);
+
+        whCount--;
+        whCurrentCost = Math.ceil(whBaseCost * Math.pow(1.15, whCount));
+
+        calculateTotalPPS();
+        updateShopUI();
+    }
+}
+
+function handleSTBClick() {
+    if (storeMode === "buy") buySTB();
+    else sellSTB();
+}
+
+function buySTB() {
+    if (isWiping) return;
+    if (parsedPoint >= stbCurrentCost) {
+        parsedPoint -= stbCurrentCost;
+        point.innerHTML = formatNumber(parsedPoint);
+        
+        stbCount++;
+        stbCurrentCost = Math.ceil(stbBaseCost * Math.pow(1.15, stbCount));
+        
+        calculateTotalPPS();
+        updateShopUI();
+    }
+}
+
+function sellSTB() {
+    if (isWiping) return;
+    if (stbCount > 0) {
+        let refundAmount = Math.floor(stbCurrentCost * 0.25);
+        parsedPoint += refundAmount;
+        point.innerHTML = formatNumber(parsedPoint);
+
+        stbCount--;
+        stbCurrentCost = Math.ceil(stbBaseCost * Math.pow(1.15, stbCount));
+
+        calculateTotalPPS();
+        updateShopUI();
+    }
+}
+
+function handleQBCClick() {
+    if (storeMode === "buy") buyQBC();
+    else sellQBC();
+}
+
+function buyQBC() {
+    if (isWiping) return;
+    if (parsedPoint >= qbcCurrentCost) {
+        parsedPoint -= qbcCurrentCost;
+        point.innerHTML = formatNumber(parsedPoint);
+        
+        qbcCount++;
+        qbcCurrentCost = Math.ceil(qbcBaseCost * Math.pow(1.15, qbcCount));
+        
+        calculateTotalPPS();
+        updateShopUI();
+    }
+}
+
+function sellSTB() {
+    if (isWiping) return;
+    if (qbcCount > 0) {
+        let refundAmount = Math.floor(qbcCurrentCost * 0.25);
+        parsedPoint += refundAmount;
+        point.innerHTML = formatNumber(parsedPoint);
+
+        qbcCount--;
+        qbcCurrentCost = Math.ceil(qbcBaseCost * Math.pow(1.15, qbcCount));
+
+        calculateTotalPPS();
+        updateShopUI();
+    }
+}
+
 function checkUnlocks() {
     let pointerFingerElement = document.getElementById("shop-item-pointer-finger");
     if (pointerFingerElement) {
@@ -422,6 +734,78 @@ function checkUnlocks() {
         if (assemblyLineCount > 0) assemblyLineElement.classList.add("fully-unlocked");
         else assemblyLineElement.classList.remove("fully-unlocked");
     }
+
+    let vaultElement = document.getElementById("shop-item-vault");
+    if (vaultElement) {
+        if (totalBiscuitsBaked >= vaultBaseCost) vaultElement.classList.add("visible");
+        else vaultElement.classList.remove("visible");
+
+        if (vaultCount > 0) vaultElement.classList.add("fully-unlocked");
+        else vaultElement.classList.remove("fully-unlocked");
+    }
+
+    let shrineElement = document.getElementById("shop-item-shrine");
+    if (shrineElement) {
+        if (totalBiscuitsBaked >= shrineBaseCost) shrineElement.classList.add("visible");
+        else shrineElement.classList.remove("visible");
+
+        if (shrineCount > 0) shrineElement.classList.add("fully-unlocked");
+        else shrineElement.classList.remove("fully-unlocked");
+    }
+
+    let witchCastleElement = document.getElementById("shop-item-witch-castle");
+    if (witchCastleElement) {
+        if (totalBiscuitsBaked >= witchCastleBaseCost) witchCastleElement.classList.add("visible");
+        else witchCastleElement.classList.remove("visible");
+
+        if (witchCastleCount > 0) witchCastleElement.classList.add("fully-unlocked");
+        else witchCastleElement.classList.remove("fully-unlocked");
+    }
+
+    let spaceShuttleElement = document.getElementById("shop-item-space-shuttle");
+    if (spaceShuttleElement) {
+        if (totalBiscuitsBaked >= spaceShuttleBaseCost) spaceShuttleElement.classList.add("visible");
+        else spaceShuttleElement.classList.remove("visible");
+
+        if (spaceShuttleCount > 0) spaceShuttleElement.classList.add("fully-unlocked");
+        else spaceShuttleElement.classList.remove("fully-unlocked");
+    }
+
+    let tmElement = document.getElementById("shop-item-tm");
+    if (tmElement) {
+        if (totalBiscuitsBaked >= tmBaseCost) tmElement.classList.add("visible");
+        else tmElement.classList.remove("visible");
+
+        if (tmCount > 0) tmElement.classList.add("fully-unlocked");
+        else tmElement.classList.remove("fully-unlocked");
+    }
+
+    let whElement = document.getElementById("shop-item-wh");
+    if (whElement) {
+        if (totalBiscuitsBaked >= whBaseCost) whElement.classList.add("visible");
+        else whElement.classList.remove("visible");
+
+        if (whCount > 0) whElement.classList.add("fully-unlocked");
+        else whElement.classList.remove("fully-unlocked");
+    }
+
+    let stbElement = document.getElementById("shop-item-stb");
+    if (stbElement) {
+        if (totalBiscuitsBaked >= stbBaseCost) stbElement.classList.add("visible");
+        else stbElement.classList.remove("visible");
+
+        if (stbCount > 0) stbElement.classList.add("fully-unlocked");
+        else stbElement.classList.remove("fully-unlocked");
+    }
+
+    let qbcElement = document.getElementById("shop-item-qbc");
+    if (qbcElement) {
+        if (totalBiscuitsBaked >= qbcBaseCost) qbcElement.classList.add("visible");
+        else qbcElement.classList.remove("visible");
+
+        if (qbcCount > 0) qbcElement.classList.add("fully-unlocked");
+        else qbcElement.classList.remove("fully-unlocked");
+    }
 }
 
 function calculateTotalPPS() {
@@ -429,7 +813,15 @@ function calculateTotalPPS() {
           (elderlyManCount * elderlyManPPSContribution) + 
           (agriculturalPropertyCount * agriculturalPropertyPPSContribution) +
           (pitCount * pitPPSContribution) +
-          (assemblyLineCount * assemblyLinePPSContribution);
+          (assemblyLineCount * assemblyLinePPSContribution) +
+          (vaultCount * vaultPPSContribution) +
+          (shrineCount * shrinePPSContribution) +
+          (witchCastleCount * witchCastlePPSContribution) +
+          (spaceShuttleCount * spaceShuttlePPSContribution) +
+          (tmCount * tmPPSContribution) +
+          (whCount * whPPSContribution) +
+          (stbCount * stbPPSContribution) +
+          (qbcCount * qbcPPSContribution) ;
           
     ppsText.innerHTML = formatPPS(pps);
 }
@@ -440,31 +832,131 @@ function updateShopUI() {
     let displayAgCost = storeMode === "buy" ? agriculturalPropertyCurrentCost : Math.floor(agriculturalPropertyCurrentCost * 0.25);
     let displayPitCost = storeMode === "buy" ? pitCurrentCost : Math.floor(pitCurrentCost * 0.25);
     let displayLineCost = storeMode === "buy" ? assemblyLineCurrentCost : Math.floor(assemblyLineCurrentCost * 0.25);
+    let displayVaultCost = storeMode === "buy" ? vaultCurrentCost : Math.floor(vaultCurrentCost * 0.25);
+    let displayShrineCost = storeMode === "buy" ? shrineCurrentCost : Math.floor(shrineCurrentCost * 0.25);
+    let displayWitchCastleCost = storeMode === "buy" ? witchCastleCurrentCost : Math.floor(witchCastleCurrentCost * 0.25);
+    let displaySpaceShuttleCost = storeMode === "buy" ? spaceShuttleCurrentCost : Math.floor(spaceShuttleCurrentCost * 0.25);
+    let displayTMCost = storeMode === "buy" ? tmCurrentCost : Math.floor(tmCurrentCost * 0.25);
+    let displayWHCost = storeMode === "buy" ? whCurrentCost : Math.floor(whCurrentCost * 0.25);
+    let displaySTBCost = storeMode === "buy" ? stbCurrentCost : Math.floor(stbCurrentCost * 0.25);
+    let displayQBCCost = storeMode === "buy" ? qbcCurrentCost : Math.floor(qbcCurrentCost * 0.25);
 
     let fingerPriceTag = document.getElementById("pointer-finger-price");
     let fingerCountTag = document.getElementById("pointer-finger-count");
-    if (fingerPriceTag) fingerPriceTag.innerHTML = formatNumber(displayFingerCost);
+    if (fingerPriceTag) {
+        fingerPriceTag.innerHTML = formatNumber(displayFingerCost);
+        if (storeMode === "buy" && parsedPoint >= pointerFingerCurrentCost) fingerPriceTag.classList.add("affordable");
+        else fingerPriceTag.classList.remove("affordable");
+    }
     if (fingerCountTag) fingerCountTag.innerHTML = pointerFingerCount;
 
     let elderlyPriceTag = document.getElementById("elderly-man-price");
     let elderlyCountTag = document.getElementById("elderly-man-count");
-    if (elderlyPriceTag) elderlyPriceTag.innerHTML = formatNumber(displayElderlyCost);
+    if (elderlyPriceTag) {
+        elderlyPriceTag.innerHTML = formatNumber(displayElderlyCost);
+        if (storeMode === "buy" && parsedPoint >= elderlyManCurrentCost) elderlyPriceTag.classList.add("affordable");
+        else elderlyPriceTag.classList.remove("affordable");
+    }
     if (elderlyCountTag) elderlyCountTag.innerHTML = elderlyManCount;
 
     let agPriceTag = document.getElementById("agricultural-property-price");
     let agCountTag = document.getElementById("agricultural-property-count");
-    if (agPriceTag) agPriceTag.innerHTML = formatNumber(displayAgCost);
+    if (agPriceTag) {
+        agPriceTag.innerHTML = formatNumber(displayAgCost);
+        if (storeMode === "buy" && parsedPoint >= agriculturalPropertyCurrentCost) agPriceTag.classList.add("affordable");
+        else agPriceTag.classList.remove("affordable");
+    }
     if (agCountTag) agCountTag.innerHTML = agriculturalPropertyCount;
 
     let pitPriceTag = document.getElementById("pit-price");
     let pitCountTag = document.getElementById("pit-count");
-    if (pitPriceTag) pitPriceTag.innerHTML = formatNumber(displayPitCost);
+    if (pitPriceTag) {
+        pitPriceTag.innerHTML = formatNumber(displayPitCost);
+        if (storeMode === "buy" && parsedPoint >= pitCurrentCost) pitPriceTag.classList.add("affordable");
+        else pitPriceTag.classList.remove("affordable");
+    }
     if (pitCountTag) pitCountTag.innerHTML = pitCount;
 
     let assemblyLinePriceTag = document.getElementById("assemblyLine-price");
     let assemblyLineCountTag = document.getElementById("assemblyLine-count");
-    if (assemblyLinePriceTag) assemblyLinePriceTag.innerHTML = formatNumber(displayLineCost);
+    if (assemblyLinePriceTag) {
+        assemblyLinePriceTag.innerHTML = formatNumber(displayLineCost);
+        if (storeMode === "buy" && parsedPoint >= assemblyLineCurrentCost) assemblyLinePriceTag.classList.add("affordable");
+        else assemblyLinePriceTag.classList.remove("affordable");
+    }
     if (assemblyLineCountTag) assemblyLineCountTag.innerHTML = assemblyLineCount;
+
+    let vaultPriceTag = document.getElementById("vault-price");
+    let vaultCountTag = document.getElementById("vault-count");
+    if (vaultPriceTag) {
+        vaultPriceTag.innerHTML = formatNumber(displayVaultCost);
+        if (storeMode === "buy" && parsedPoint >= vaultCurrentCost) vaultPriceTag.classList.add("affordable");
+        else vaultPriceTag.classList.remove("affordable");
+    }
+    if (vaultCountTag) vaultCountTag.innerHTML = vaultCount;
+
+    let shrinePriceTag = document.getElementById("shrine-price");
+    let shrineCountTag = document.getElementById("shrine-count");
+    if (shrinePriceTag) {
+        shrinePriceTag.innerHTML = formatNumber(displayShrineCost);
+        if (storeMode === "buy" && parsedPoint >= shrineCurrentCost) shrinePriceTag.classList.add("affordable");
+        else shrinePriceTag.classList.remove("affordable");
+    }
+    if (shrineCountTag) shrineCountTag.innerHTML = shrineCount;
+
+    let witchCastlePriceTag = document.getElementById("witch-castle-price");
+    let witchCastleCountTag = document.getElementById("witch-castle-count");
+    if (witchCastlePriceTag) {
+        witchCastlePriceTag.innerHTML = formatNumber(displayWitchCastleCost);
+        if (storeMode === "buy" && parsedPoint >= witchCastleCurrentCost) witchCastlePriceTag.classList.add("affordable");
+        else witchCastlePriceTag.classList.remove("affordable");
+    }
+    if (witchCastleCountTag) witchCastleCountTag.innerHTML = witchCastleCount;
+
+    let spaceShuttlePriceTag = document.getElementById("space-shuttle-price");
+    let spaceShuttleCountTag = document.getElementById("space-shuttle-count");
+    if (spaceShuttlePriceTag) {
+        spaceShuttlePriceTag.innerHTML = formatNumber(displaySpaceShuttleCost);
+        if (storeMode === "buy" && parsedPoint >= spaceShuttleCurrentCost) spaceShuttlePriceTag.classList.add("affordable");
+        else spaceShuttlePriceTag.classList.remove("affordable");
+    }
+    if (spaceShuttleCountTag) spaceShuttleCountTag.innerHTML = spaceShuttleCount;
+
+    let tmPriceTag = document.getElementById("tm-price");
+    let tmCountTag = document.getElementById("tm-count");
+    if (tmPriceTag) {
+        tmPriceTag.innerHTML = formatNumber(displayTMCost);
+        if (storeMode === "buy" && parsedPoint >= tmCurrentCost) tmPriceTag.classList.add("affordable");
+        else tmPriceTag.classList.remove("affordable");
+    }
+    if (tmCountTag) tmCountTag.innerHTML = tmCount;
+
+    let whPriceTag = document.getElementById("wh-price");
+    let whCountTag = document.getElementById("wh-count");
+    if (whPriceTag) {
+        whPriceTag.innerHTML = formatNumber(displayWHCost);
+        if (storeMode === "buy" && parsedPoint >= whCurrentCost) whPriceTag.classList.add("affordable");
+        else whPriceTag.classList.remove("affordable");
+    }
+    if (whCountTag) whCountTag.innerHTML = whCount;
+
+    let stbPriceTag = document.getElementById("stb-price");
+    let stbCountTag = document.getElementById("stb-count");
+    if (stbPriceTag) {
+        stbPriceTag.innerHTML = formatNumber(displaySTBCost);
+        if (storeMode === "buy" && parsedPoint >= stbCurrentCost) stbPriceTag.classList.add("affordable");
+        else stbPriceTag.classList.remove("affordable");
+    }
+    if (stbCountTag) stbCountTag.innerHTML = stbCount;
+
+    let qbcPriceTag = document.getElementById("qbc-price");
+    let qbcCountTag = document.getElementById("qbc-count");
+    if (qbcPriceTag) {
+        qbcPriceTag.innerHTML = formatNumber(displayQBCCost);
+        if (storeMode === "buy" && parsedPoint >= qbcCurrentCost) qbcPriceTag.classList.add("affordable");
+        else qbcPriceTag.classList.remove("affordable");
+    }
+    if (qbcCountTag) qbcCountTag.innerHTML = qbcCount;
 }
 
 function incrementPoints() {
@@ -472,6 +964,7 @@ function incrementPoints() {
     parsedPoint += 1;
     totalBiscuitsBaked += 1; 
     point.innerHTML = formatNumber(parsedPoint);
+    updateShopUI();
     checkUnlocks(); 
 }
 
@@ -485,6 +978,7 @@ setInterval(() => {
         totalBiscuitsBaked += ppsPerTick; 
         point.innerHTML = formatNumber(parsedPoint);
     }
+    updateShopUI();
     checkUnlocks(); 
 }, 1000 / ticksPerSecond);
 
@@ -535,7 +1029,6 @@ nameInput.addEventListener("keydown", function(event) {
     }
 });
 
-// dev cheetos
 function devAddBiscuits(amount) {
     if (isWiping) return;
     parsedPoint += amount;
@@ -568,8 +1061,32 @@ function devMaxUpgrades() {
     
     assemblyLineCount += 10;
     assemblyLineCurrentCost = Math.ceil(assemblyLineBaseCost * Math.pow(1.15, assemblyLineCount));
+
+    vaultCount += 10;
+    vaultCurrentCost = Math.ceil(vaultBaseCost * Math.pow(1.15, vaultCount));
     
-    totalBiscuitsBaked = Math.max(totalBiscuitsBaked, assemblyLineBaseCost);
+    shrineCount += 10;
+    shrineCurrentCost = Math.ceil(shrineBaseCost * Math.pow(1.15, shrineCount));
+    
+    witchCastleCount += 10;
+    witchCastleCurrentCost = Math.ceil(witchCastleBaseCost * Math.pow(1.15, witchCastleCount));
+
+    spaceShuttleCount += 10;
+    spaceShuttleCurrentCost = Math.ceil(spaceShuttleBaseCost * Math.pow(1.15, spaceShuttleCount));
+
+    tmCount += 10;
+    tmCurrentCost = Math.ceil(tmBaseCost * Math.pow(1.15, tmCount));
+
+    whCount += 10;
+    whCurrentCost = Math.ceil(whBaseCost * Math.pow(1.15, whCount));
+
+    stbCount += 10;
+    stbCurrentCost = Math.ceil(stbBaseCost * Math.pow(1.15, stbCount));
+
+    qbcCount += 10;
+    qbcCurrentCost = Math.ceil(qbcBaseCost * Math.pow(1.15, qbcCount));
+
+    totalBiscuitsBaked = Math.max(totalBiscuitsBaked, qbcBaseCost);
     
     calculateTotalPPS();
     updateShopUI();
@@ -589,12 +1106,28 @@ function devWipeSave() {
     agriculturalPropertyCount = 0;
     pitCount = 0;
     assemblyLineCount = 0;
+    vaultCount = 0;
+    shrineCount = 0;
+    witchCastleCount = 0;
+    spaceShuttleCount = 0;
+    tmCount = 0;
+    whCount = 0;
+    stbCount = 0;
+    qbcCount = 0;
 
     pointerFingerCurrentCost = pointerFingerBaseCost;
     elderlyManCurrentCost = elderlyManBaseCost;
     agriculturalPropertyCurrentCost = agriculturalPropertyBaseCost;
     pitCurrentCost = pitBaseCost;
     assemblyLineCurrentCost = assemblyLineBaseCost;
+    vaultCurrentCost = vaultBaseCost;
+    shrineCurrentCost = shrineBaseCost;
+    witchCastleCurrentCost = witchCastleBaseCost;
+    spaceShuttleCurrentCost = spaceShuttleBaseCost;
+    tmCurrentCost = tmBaseCost;
+    whCurrentCost = whBaseCost;
+    stbCurrentCost = stbBaseCost;
+    qbcCurrentCost = qbcBaseCost;
 
     calculateTotalPPS();
     updateShopUI();
