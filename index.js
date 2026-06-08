@@ -87,6 +87,26 @@ const rsBaseCost = 310000000000000000;
 let rsCurrentCost = rsBaseCost;
 const rsPPSContribution = 150000000000.0;
 
+let bmCount = 0;
+const bmBaseCost = 71000000000000000000;
+let bmCurrentCost = bmBaseCost;
+const bmPPSContribution = 1100000000000.0;
+
+let dmCount = 0;
+const dmBaseCost = 12000000000000000000000;
+let dmCurrentCost = dmBaseCost;
+const dmPPSContribution = 8300000000000.0;
+
+let bhCount = 0;
+const bhBaseCost = 1900000000000000000000000;
+let bhCurrentCost = bhBaseCost;
+const bhPPSContribution = 64000000000000.0;
+
+let meCount = 0;
+const meBaseCost = 540000000000000000000000000;
+let meCurrentCost = meBaseCost;
+const mePPSContribution = 510000000000000.0;
+
 const formats = [
     { value: 1e303, symbol: " centillion" },
     { value: 1e300, symbol: " novemnonagintillion" },
@@ -806,6 +826,142 @@ function sellRS() {
     }
 }
 
+function handleBMClick() {
+    if (storeMode === "buy") buyBM();
+    else sellBM();
+}
+
+function buyBM() {
+    if (isWiping) return;
+    if (parsedPoint >= bmCurrentCost) {
+        parsedPoint -= bmCurrentCost;
+        point.innerHTML = formatNumber(parsedPoint);
+        
+        bmCount++;
+        bmCurrentCost = Math.ceil(bmBaseCost * Math.pow(1.15, bmCount));
+        
+        calculateTotalPPS();
+        updateShopUI();
+    }
+}
+
+function sellBM() {
+    if (isWiping) return;
+    if (bmCount > 0) {
+        let refundAmount = Math.floor(bmCurrentCost * 0.25);
+        parsedPoint += refundAmount;
+        point.innerHTML = formatNumber(parsedPoint);
+
+        bmCount--;
+        bmCurrentCost = Math.ceil(bmBaseCost * Math.pow(1.15, bmCount));
+
+        calculateTotalPPS();
+        updateShopUI();
+    }
+}
+
+function handleDMClick() {
+    if (storeMode === "buy") buyDM();
+    else sellDM();
+}
+
+function buyDM() {
+    if (isWiping) return;
+    if (parsedPoint >= dmCurrentCost) {
+        parsedPoint -= dmCurrentCost;
+        point.innerHTML = formatNumber(parsedPoint);
+        
+        dmCount++;
+        dmCurrentCost = Math.ceil(dmBaseCost * Math.pow(1.15, dmCount));
+        
+        calculateTotalPPS();
+        updateShopUI();
+    }
+}
+
+function sellDM() {
+    if (isWiping) return;
+    if (dmCount > 0) {
+        let refundAmount = Math.floor(dmCurrentCost * 0.25);
+        parsedPoint += refundAmount;
+        point.innerHTML = formatNumber(parsedPoint);
+
+        dmCount--;
+        dmCurrentCost = Math.ceil(dmBaseCost * Math.pow(1.15, dmCount));
+
+        calculateTotalPPS();
+        updateShopUI();
+    }
+}
+
+function handleBHClick() {
+    if (storeMode === "buy") buyBH();
+    else sellBH();
+}
+
+function buyBH() {
+    if (isWiping) return;
+    if (parsedPoint >= bhCurrentCost) {
+        parsedPoint -= bhCurrentCost;
+        point.innerHTML = formatNumber(parsedPoint);
+        
+        bhCount++;
+        bhCurrentCost = Math.ceil(bhBaseCost * Math.pow(1.15, bhCount));
+        
+        calculateTotalPPS();
+        updateShopUI();
+    }
+}
+
+function sellBH() {
+    if (isWiping) return;
+    if (bhCount > 0) {
+        let refundAmount = Math.floor(bhCurrentCost * 0.25);
+        parsedPoint += refundAmount;
+        point.innerHTML = formatNumber(parsedPoint);
+
+        bhCount--;
+        bhCurrentCost = Math.ceil(bhBaseCost * Math.pow(1.15, bhCount));
+
+        calculateTotalPPS();
+        updateShopUI();
+    }
+}
+
+function handleMEClick() {
+    if (storeMode === "buy") buyME();
+    else sellME();
+}
+
+function buyME() {
+    if (isWiping) return;
+    if (parsedPoint >= meCurrentCost) {
+        parsedPoint -= meCurrentCost;
+        point.innerHTML = formatNumber(parsedPoint);
+        
+        meCount++;
+        meCurrentCost = Math.ceil(meBaseCost * Math.pow(1.15, meCount));
+        
+        calculateTotalPPS();
+        updateShopUI();
+    }
+}
+
+function sellME() {
+    if (isWiping) return;
+    if (meCount > 0) {
+        let refundAmount = Math.floor(meCurrentCost * 0.25);
+        parsedPoint += refundAmount;
+        point.innerHTML = formatNumber(parsedPoint);
+
+        meCount--;
+        meCurrentCost = Math.ceil(meBaseCost * Math.pow(1.15, meCount));
+
+        calculateTotalPPS();
+        updateShopUI();
+    }
+}
+
 function checkUnlocks() {
     let pointerFingerElement = document.getElementById("shop-item-pointer-finger");
     if (pointerFingerElement) {
@@ -950,6 +1106,42 @@ function checkUnlocks() {
         if (rsCount > 0) rsElement.classList.add("fully-unlocked");
         else rsElement.classList.remove("fully-unlocked");
     }
+
+    let bmElement = document.getElementById("shop-item-bm");
+    if (bmElement) {
+        if (totalBiscuitsBaked >= bmBaseCost) bmElement.classList.add("visible");
+        else bmElement.classList.remove("visible");
+
+        if (bmCount > 0) bmElement.classList.add("fully-unlocked");
+        else bmElement.classList.remove("fully-unlocked");
+    }
+
+    let dmElement = document.getElementById("shop-item-dm");
+    if (dmElement) {
+        if (totalBiscuitsBaked >= dmBaseCost) dmElement.classList.add("visible");
+        else dmElement.classList.remove("visible");
+
+        if (dmCount > 0) dmElement.classList.add("fully-unlocked");
+        else dmElement.classList.remove("fully-unlocked");
+    }
+
+    let bhElement = document.getElementById("shop-item-bh");
+    if (bhElement) {
+        if (totalBiscuitsBaked >= bhBaseCost) bhElement.classList.add("visible");
+        else bhElement.classList.remove("visible");
+
+        if (bhCount > 0) bhElement.classList.add("fully-unlocked");
+        else bhElement.classList.remove("fully-unlocked");
+    }
+
+    let meElement = document.getElementById("shop-item-me");
+    if (meElement) {
+        if (totalBiscuitsBaked >= meBaseCost) meElement.classList.add("visible");
+        else meElement.classList.remove("visible");
+
+        if (meCount > 0) meElement.classList.add("fully-unlocked");
+        else meElement.classList.remove("fully-unlocked");
+    }
 }
 
 function calculateTotalPPS() {
@@ -968,7 +1160,11 @@ function calculateTotalPPS() {
           (qbcCount * qbcPPSContribution) +
           (ckCount * ckPPSContribution) +
           (gbCount * gbPPSContribution) +
-          (rsCount * rsPPSContribution);
+          (rsCount * rsPPSContribution) +
+          (bmCount * bmPPSContribution) +
+          (dmCount * dmPPSContribution) +
+          (bhCount * bhPPSContribution) +
+          (meCount * mePPSContribution) ;
 
     ppsText.innerHTML = formatPPS(pps);
 }
@@ -990,6 +1186,10 @@ function updateShopUI() {
     let displayCKCost = storeMode === "buy" ? ckCurrentCost : Math.floor(ckCurrentCost * 0.25);
     let displayGBCost = storeMode === "buy" ? gbCurrentCost : Math.floor(gbCurrentCost * 0.25);
     let displayRSCost = storeMode === "buy" ? rsCurrentCost : Math.floor(rsCurrentCost * 0.25);
+    let displayBMCost = storeMode === "buy" ? bmCurrentCost : Math.floor(bmCurrentCost * 0.25);
+    let displayDMCost = storeMode === "buy" ? dmCurrentCost : Math.floor(dmCurrentCost * 0.25);
+    let displayBHCost = storeMode === "buy" ? bhCurrentCost : Math.floor(bhCurrentCost * 0.25);
+    let displayMECost = storeMode === "buy" ? meCurrentCost : Math.floor(meCurrentCost * 0.25);
 
     let fingerPriceTag = document.getElementById("pointer-finger-price");
     let fingerCountTag = document.getElementById("pointer-finger-count");
@@ -1134,6 +1334,42 @@ function updateShopUI() {
         else rsPriceTag.classList.remove("affordable");
     }
     if (rsCountTag) rsCountTag.innerHTML = rsCount;
+
+    let bmPriceTag = document.getElementById("bm-price");
+    let bmCountTag = document.getElementById("bm-count");
+    if (bmPriceTag) {
+        bmPriceTag.innerHTML = formatNumber(displayBMCost);
+        if (storeMode === "buy" && parsedPoint >= bmCurrentCost) bmPriceTag.classList.add("affordable");
+        else bmPriceTag.classList.remove("affordable");
+    }
+    if (bmCountTag) bmCountTag.innerHTML = bmCount;
+
+    let dmPriceTag = document.getElementById("dm-price");
+    let dmCountTag = document.getElementById("dm-count");
+    if (dmPriceTag) {
+        dmPriceTag.innerHTML = formatNumber(displayDMCost);
+        if (storeMode === "buy" && parsedPoint >= dmCurrentCost) dmPriceTag.classList.add("affordable");
+        else dmPriceTag.classList.remove("affordable");
+    }
+    if (dmCountTag) dmCountTag.innerHTML = dmCount;
+
+    let bhPriceTag = document.getElementById("bh-price");
+    let bhCountTag = document.getElementById("bh-count");
+    if (bhPriceTag) {
+        bhPriceTag.innerHTML = formatNumber(displayBHCost);
+        if (storeMode === "buy" && parsedPoint >= bhCurrentCost) bhPriceTag.classList.add("affordable");
+        else bhPriceTag.classList.remove("affordable");
+    }
+    if (bhCountTag) bhCountTag.innerHTML = bhCount;
+
+    let mePriceTag = document.getElementById("me-price");
+    let meCountTag = document.getElementById("me-count");
+    if (mePriceTag) {
+        mePriceTag.innerHTML = formatNumber(displayMECost);
+        if (storeMode === "buy" && parsedPoint >= meCurrentCost) mePriceTag.classList.add("affordable");
+        else mePriceTag.classList.remove("affordable");
+    }
+    if (meCountTag) meCountTag.innerHTML = meCount;
 }
 
 function incrementPoints() {
@@ -1159,28 +1395,28 @@ setInterval(() => {
     checkUnlocks(); 
 }, 1000 / ticksPerSecond);
 
-const modal = document.getElementById("naming-modal");
-const nameInput = document.getElementById("bakery-name-input");
-const nameDisplay = document.getElementById("bakery-name");
+const namePopup = document.getElementById("name-popup");
+const bakeryNameField = document.getElementById("bakery-name-input");
+const bakeryNameLabel = document.getElementById("bakery-name");
 
 const randomPrefixes = ["Magic", "Golden", "Grandma", "Fancy", "Tasty", "Power", "Lucky", "Happy", "Crispy"];
 const randomSuffixes = ["Turtle", "Baker", "Biscuit", "Cookie", "Monster", "Hero", "Star", "Knight", "Captain"];
 
-function openNamingModal() {
-    modal.style.display = "flex";
-    nameInput.value = nameDisplay.innerText;
-    nameInput.focus();
-    nameInput.select();
+function openNamePopup() {
+    namePopup.style.display = "flex";
+    bakeryNameField.value = bakeryNameLabel.innerText;
+    bakeryNameField.focus();
+    bakeryNameField.select();
 }
 
-function closeNamingModal() {
-    modal.style.display = "none";
+function closeNamePopup() {
+    namePopup.style.display = "none";
 }
 
 function confirmBakeryName() {
-    let cleanName = nameInput.value.trim();
+    let cleanName = bakeryNameField.value.trim();
     if (cleanName !== "") {
-        nameDisplay.innerText = cleanName;
+        bakeryNameLabel.innerText = cleanName;
         if (cleanName.endsWith("saysclosesesame")) {
             devModeActivated = true;
             document.getElementById("dev-badge").style.display = "block";
@@ -1191,16 +1427,16 @@ function confirmBakeryName() {
             }
         }
     }
-    closeNamingModal();
+    closeNamePopup();
 }
 
 function randomBakeryName() {
     let randomPref = randomPrefixes[Math.floor(Math.random() * randomPrefixes.length)];
     let randomSuff = randomSuffixes[Math.floor(Math.random() * randomSuffixes.length)];
-    nameInput.value = randomPref + " " + randomSuff;
+    bakeryNameField.value = randomPref + " " + randomSuff;
 }
 
-nameInput.addEventListener("keydown", function(event) {
+bakeryNameField.addEventListener("keydown", function(event) {
     if (event.key === "Enter") {
         confirmBakeryName();
     }
@@ -1272,7 +1508,19 @@ function devMaxUpgrades() {
     rsCount += 10;
     rsCurrentCost = Math.ceil(rsBaseCost * Math.pow(1.15, rsCount));
 
-    totalBiscuitsBaked = Math.max(totalBiscuitsBaked, BaseCost);
+    bmCount += 10;
+    bmCurrentCost = Math.ceil(bmBaseCost * Math.pow(1.15, bmCount));
+
+    dmCount += 10;
+    dmCurrentCost = Math.ceil(dmBaseCost * Math.pow(1.15, dmCount));
+
+    bhCount += 10;
+    bhCurrentCost = Math.ceil(bhBaseCost * Math.pow(1.15, bhCount));
+
+    meCount += 10;
+    meCurrentCost = Math.ceil(meBaseCost * Math.pow(1.15, meCount));
+
+    totalBiscuitsBaked = Math.max(totalBiscuitsBaked);
     
     calculateTotalPPS();
     updateShopUI();
@@ -1303,6 +1551,10 @@ function devWipeSave() {
     ckCount = 0;
     gbCount = 0;
     rsCount = 0;
+    bmCount = 0;
+    dmCount = 0;
+    bhCount = 0;
+    meCount = 0;
 
     pointerFingerCurrentCost = pointerFingerBaseCost;
     elderlyManCurrentCost = elderlyManBaseCost;
@@ -1320,6 +1572,10 @@ function devWipeSave() {
     ckCurrentCost = ckBaseCost;
     gbCurrentCost = gbBaseCost;
     rsCurrentCost = rsBaseCost;
+    bmCurrentCost = bmBaseCost;
+    dmCurrentCost = dmBaseCost;
+    bhCurrentCost = bhBaseCost;
+    meCurrentCost = meBaseCost;
 
     calculateTotalPPS();
     updateShopUI();

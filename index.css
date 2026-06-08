@@ -391,7 +391,11 @@ body {
 .shop-item.selling-active #qbc-price,
 .shop-item.selling-active #ck-price,
 .shop-item.selling-active #gb-price,
-.shop-item.selling-active #rs-price {
+.shop-item.selling-active #rs-price,
+.shop-item.selling-active #bm-price,
+.shop-item.selling-active #dm-price,
+.shop-item.selling-active #bh-price,
+.shop-item.selling-active #me-price {
     color: #e54e4e !important;
 }
 
@@ -478,7 +482,7 @@ body {
     filter: drop-shadow(0px 1px 1px rgba(0,0,0,0.6));
 }
 
-#pointer-finger-price, #elderly-man-price, #agricultural-property-price, #pit-price, #assemblyLine-price, #vault-price, #shrine-price, #witch-castle-price, #space-shuttle-price, #tm-price, #wh-price, #stb-price, #qbc-price, #ck-price, #gb-price, #rs-price {
+#pointer-finger-price, #elderly-man-price, #agricultural-property-price, #pit-price, #assemblyLine-price, #vault-price, #shrine-price, #witch-castle-price, #space-shuttle-price, #tm-price, #wh-price, #stb-price, #qbc-price, #ck-price, #gb-price, #rs-price, #bm-price, #dm-price, #bh-price, #me-price {
     font-family: Arial, sans-serif;
     font-size: 13px;
     font-weight: 700;

@@ -8,13 +8,14 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght=0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="upgrades.css">
 </head>
 <body>
     <div class="main">
         <div class="left-section">
             <div class="left-content">
                 <div id="dev-badge" class="dev-mode-badge">DEV MODE</div>
-                <div class="bakery-name-container" onclick="openNamingModal()">
+                <div class="bakery-name-container" onclick="openNamePopup()">
                     <span id="bakery-name">Power Turtle</span>'s bakery
                 </div>
 
@@ -29,8 +30,10 @@
         <div class="separator"></div>
         
         <div class="middle-section">
+            <div class="upgrades-header">Upgrades</div>
+            <div id="upgrade-panel"></div>
             <div id="dev-tools-panel" class="dev-panel">
-                <div id="dev-panel-header" class="dev-panel-header">Developer Tools (Drag Me)</div>
+                <div id="dev-panel-header" class="dev-panel-header">Developer Tools</div>
                 <div class="dev-panel-grid">
                     <button onclick="devAddBiscuits(10000)">+10k Biscuits</button>
                     <button onclick="devMultiplyBiscuits(100)">x100 Biscuits</button>
@@ -322,21 +325,90 @@
                 </div>
                 <div id="rs-count" class="item-counter-display">0</div>
             </div>
+
+            <div class="shop-item" id="shop-item-bm" onclick="handleBMClick()">
+                <div class="shop-item-icon-box">
+                    <img src="biscuit-matrix.png" alt="" class="shop-item-icon" draggable="false">
+                </div>
+                <div class="shop-item-details">
+                    <div class="item-name">
+                        <span class="mystery-name">???</span>
+                        <span class="real-name">Biscuit Matrix</span>
+                    </div>
+                    <div class="item-cost-row">
+                        <img src="b4842fc5e82ce3fd5d6fb074a720f938586a7837-removebg-preview.png" class="mini-biscuit-icon" alt="" draggable="false">
+                        <span id="bm-price">71000000000000000000</span>
+                    </div>
+                </div>
+                <div id="bm-count" class="item-counter-display">0</div>
+            </div>
+
+            <div class="shop-item" id="shop-item-dm" onclick="handleDMClick()">
+                <div class="shop-item-icon-box">
+                    <img src="dough-mension.png" alt="" class="shop-item-icon" draggable="false">
+                </div>
+                <div class="shop-item-details">
+                    <div class="item-name">
+                        <span class="mystery-name">???</span>
+                        <span class="real-name">Dough-mension</span>
+                    </div>
+                    <div class="item-cost-row">
+                        <img src="b4842fc5e82ce3fd5d6fb074a720f938586a7837-removebg-preview.png" class="mini-biscuit-icon" alt="" draggable="false">
+                        <span id="dm-price">71000000000000000000</span>
+                    </div>
+                </div>
+                <div id="dm-count" class="item-counter-display">0</div>
+            </div>
+
+            <div class="shop-item" id="shop-item-bh" onclick="handleBHClick()">
+                <div class="shop-item-icon-box">
+                    <img src="biscuit-hivemind.png" alt="" class="shop-item-icon" draggable="false">
+                </div>
+                <div class="shop-item-details">
+                    <div class="item-name">
+                        <span class="mystery-name">???</span>
+                        <span class="real-name">Biscuit Hivemind</span>
+                    </div>
+                    <div class="item-cost-row">
+                        <img src="b4842fc5e82ce3fd5d6fb074a720f938586a7837-removebg-preview.png" class="mini-biscuit-icon" alt="" draggable="false">
+                        <span id="bh-price">1900000000000000000000000</span>
+                    </div>
+                </div>
+                <div id="bh-count" class="item-counter-display">0</div>
+            </div>
+
+            <div class="shop-item" id="shop-item-me" onclick="handleMEClick()">
+                <div class="shop-item-icon-box">
+                    <img src="me.png" alt="" class="shop-item-icon" draggable="false">
+                </div>
+                <div class="shop-item-details">
+                    <div class="item-name">
+                        <span class="mystery-name">???</span>
+                        <span class="real-name">Me</span>
+                    </div>
+                    <div class="item-cost-row">
+                        <img src="b4842fc5e82ce3fd5d6fb074a720f938586a7837-removebg-preview.png" class="mini-biscuit-icon" alt="" draggable="false">
+                        <span id="me-price">540000000000000000000000000</span>
+                    </div>
+                </div>
+                <div id="me-count" class="item-counter-display">0</div>
+            </div>
             </div>
         </div>
 
-    <div id="naming-modal" class="modal-overlay">
+    <div id="name-popup" class="modal-overlay">
         <div class="modal-content">
             <h3>Name your bakery</h3>
             <input type="text" id="bakery-name-input" maxlength="40" spellcheck="false" autocomplete="off">
             <div class="modal-buttons">
                 <button onclick="confirmBakeryName()">Confirm</button>
                 <button onclick="randomBakeryName()">Random</button>
-                <button onclick="closeNamingModal()">Cancel</button>
+                <button onclick="closeNamePopup()">Cancel</button>
             </div>
         </div>
     </div>
 
     <script src="index.js"></script>
+    <script src="upgrades.js"></script>
 </body>
 </html>
