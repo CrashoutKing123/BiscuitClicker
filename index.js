@@ -282,6 +282,26 @@ function setStoreMode(mode) {
     updateShopUI();
 }
 
+let audioContext = null;
+let audioBuffer = null;
+
+async function loadBiscuitSound() {
+    audioContext = new AudioContext();
+    const response = await fetch('biscuit-sound.mp3');
+    const arrayBuffer = await response.arrayBuffer();
+    audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+}
+
+loadBiscuitSound();
+
+function playBiscuitSound() {
+    if (!audioContext || !audioBuffer) return;
+    const source = audioContext.createBufferSource();
+    source.buffer = audioBuffer;
+    source.connect(audioContext.destination);
+    source.start(0);
+}
+
 function handlePointerFingerClick() {
     if (storeMode === "buy") buyPointerFinger();
     else sellPointerFinger();
@@ -1379,6 +1399,7 @@ function incrementPoints() {
     point.innerHTML = formatNumber(parsedPoint);
     updateShopUI();
     checkUnlocks(); 
+    playBiscuitSound();
 }
 
 const ticksPerSecond = 30;

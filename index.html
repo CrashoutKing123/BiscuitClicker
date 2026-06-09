@@ -9,6 +9,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght=0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="index.css">
     <link rel="stylesheet" href="upgrades.css">
+    <audio id="biscuitSound" src="biscuit-sound.mp3"></audio>
+    <audio id="buySound" src="buy-sound.mp3"></audio>
 </head>
 <body>
     <div class="main">
@@ -22,7 +24,7 @@
                 <h3><span class="point-cost">0</span> biscuits</h3>
                 <p class="biscuit-rate">per second: <span id="pps-text">0</span></p>
                 <div class="biscuit-container">
-                    <img src="b4842fc5e82ce3fd5d6fb074a720f938586a7837-removebg-preview.png" alt="" srcset="" class="biscuit-image" onclick="incrementPoints()" draggable="false">
+                    <img src="b4842fc5e82ce3fd5d6fb074a720f938586a7837-removebg-preview.png" alt="" srcset="" class="biscuit-image" onclick="incrementPoints(); playBiscuitSound();" draggable="false">
                 </div>
             </div>
         </div>
@@ -54,7 +56,7 @@
             </div>
             
             <div class="store-content">
-                <div class="shop-item" id="shop-item-pointer-finger" onclick="handlePointerFingerClick()">
+                <div class="shop-item" id="shop-item-pointer-finger" onclick="handlePointerFingerClick(); document.getElementById('buySound').play();">
                 <div class="shop-item-icon-box">
                     <img src="Adobe Express - file (1).png" alt="" class="shop-item-icon" draggable="false">
                 </div>
@@ -71,7 +73,7 @@
                 <div id="pointer-finger-count" class="item-counter-display">0</div>
             </div>
 
-            <div class="shop-item" id="shop-item-elderly-man" onclick="handleElderlyManClick()">
+            <div class="shop-item" id="shop-item-elderly-man" onclick="handleElderlyManClick(); document.getElementById('buySound').play();">
                 <div class="shop-item-icon-box">
                     <img src="elderly-man.png" alt="" class="shop-item-icon" draggable="false">
                 </div>
@@ -88,7 +90,7 @@
                 <div id="elderly-man-count" class="item-counter-display">0</div>
             </div>
 
-            <div class="shop-item" id="shop-item-agricultural-property" onclick="handleAgriculturalPropertyClick()">
+            <div class="shop-item" id="shop-item-agricultural-property" onclick="handleAgriculturalPropertyClick(); document.getElementById('buySound').play();">
                 <div class="shop-item-icon-box">
                     <img src="agricultural-property.png" alt="" class="shop-item-icon" draggable="false">
                 </div>
@@ -105,7 +107,7 @@
                 <div id="agricultural-property-count" class="item-counter-display">0</div>
             </div>
 
-            <div class="shop-item" id="shop-item-pit" onclick="handlePitClick()">
+            <div class="shop-item" id="shop-item-pit" onclick="handlePitClick(); document.getElementById('buySound').play();">
                 <div class="shop-item-icon-box">
                     <img src="pit.png" alt="" class="shop-item-icon" draggable="false">
                 </div>
@@ -122,7 +124,7 @@
                 <div id="pit-count" class="item-counter-display">0</div>
             </div>
 
-            <div class="shop-item" id="shop-item-assemblyLine" onclick="handleAssemblyLineClick()">
+            <div class="shop-item" id="shop-item-assemblyLine" onclick="handleAssemblyLineClick(); document.getElementById('buySound').play();">
                 <div class="shop-item-icon-box">
                     <img src="assembly-line.png" alt="" class="shop-item-icon" draggable="false">
                 </div>
@@ -139,7 +141,7 @@
                 <div id="assemblyLine-count" class="item-counter-display">0</div>
             </div>
 
-            <div class="shop-item" id="shop-item-vault" onclick="handleVaultClick()">
+            <div class="shop-item" id="shop-item-vault" onclick="handleVaultClick(); document.getElementById('buySound').play();">
                 <div class="shop-item-icon-box">
                     <img src="vault.png" alt="" class="shop-item-icon" draggable="false">
                 </div>
@@ -156,7 +158,7 @@
                 <div id="vault-count" class="item-counter-display">0</div>
             </div>
 
-            <div class="shop-item" id="shop-item-shrine" onclick="handleShrineClick()">
+            <div class="shop-item" id="shop-item-shrine" onclick="handleShrineClick(); document.getElementById('buySound').play();">
                 <div class="shop-item-icon-box">
                     <img src="shrine.png" alt="" class="shop-item-icon" draggable="false">
                 </div>
@@ -173,7 +175,7 @@
                 <div id="shrine-count" class="item-counter-display">0</div>
             </div>
 
-            <div class="shop-item" id="shop-item-witch-castle" onclick="handleWitchCastleClick()">
+            <div class="shop-item" id="shop-item-witch-castle" onclick="handleWitchCastleClick(); document.getElementById('buySound').play();">
                 <div class="shop-item-icon-box">
                     <img src="witch's-castle.png" alt="" class="shop-item-icon" draggable="false">
                 </div>
@@ -190,7 +192,7 @@
                 <div id="witch-castle-count" class="item-counter-display">0</div>
             </div>
 
-            <div class="shop-item" id="shop-item-space-shuttle" onclick="handleSpaceShuttleClick()">
+            <div class="shop-item" id="shop-item-space-shuttle" onclick="handleSpaceShuttleClick(); document.getElementById('buySound').play();">
                 <div class="shop-item-icon-box">
                     <img src="space-shuttle.png" alt="" class="shop-item-icon" draggable="false">
                 </div>
@@ -207,7 +209,7 @@
                 <div id="space-shuttle-count" class="item-counter-display">0</div>
             </div>
 
-            <div class="shop-item" id="shop-item-tm" onclick="handleTMClick()">
+            <div class="shop-item" id="shop-item-tm" onclick="handleTMClick(); document.getElementById('buySound').play();">
                 <div class="shop-item-icon-box">
                     <img src="transmutation-oven.png" alt="" class="shop-item-icon" draggable="false">
                 </div>
@@ -224,7 +226,7 @@
                 <div id="tm-count" class="item-counter-display">0</div>
             </div>
 
-            <div class="shop-item" id="shop-item-wh" onclick="handleWHClick()">
+            <div class="shop-item" id="shop-item-wh" onclick="handleWHClick(); document.getElementById('buySound').play();">
                 <div class="shop-item-icon-box">
                     <img src="wormhole.png" alt="" class="shop-item-icon" draggable="false">
                 </div>
@@ -241,7 +243,7 @@
                 <div id="wh-count" class="item-counter-display">0</div>
             </div>
 
-            <div class="shop-item" id="shop-item-stb" onclick="handleSTBClick()">
+            <div class="shop-item" id="shop-item-stb" onclick="handleSTBClick(); document.getElementById('buySound').play();">
                 <div class="shop-item-icon-box">
                     <img src="space-time-bender.png" alt="" class="shop-item-icon" draggable="false">
                 </div>
@@ -258,7 +260,7 @@
                 <div id="stb-count" class="item-counter-display">0</div>
             </div>
 
-            <div class="shop-item" id="shop-item-qbc" onclick="handleQBCClick()">
+            <div class="shop-item" id="shop-item-qbc" onclick="handleQBCClick(); document.getElementById('buySound').play();">
                 <div class="shop-item-icon-box">
                     <img src="quantum-baking-chamber.png" alt="" class="shop-item-icon" draggable="false">
                 </div>
@@ -275,7 +277,7 @@
                 <div id="qbc-count" class="item-counter-display">0</div>
             </div>
 
-            <div class="shop-item" id="shop-item-ck" onclick="handleCKClick()">
+            <div class="shop-item" id="shop-item-ck" onclick="handleCKClick(); document.getElementById('buySound').play();">
                 <div class="shop-item-icon-box">
                     <img src="cookie-kaleidoscope.png" alt="" class="shop-item-icon" draggable="false">
                 </div>
@@ -292,7 +294,7 @@
                 <div id="ck-count" class="item-counter-display">0</div>
             </div>
 
-            <div class="shop-item" id="shop-item-gb" onclick="handleGBClick()">
+            <div class="shop-item" id="shop-item-gb" onclick="handleGBClick(); document.getElementById('buySound').play();">
                 <div class="shop-item-icon-box">
                     <img src="gambler.png" alt="" class="shop-item-icon" draggable="false">
                 </div>
@@ -309,7 +311,7 @@
                 <div id="gb-count" class="item-counter-display">0</div>
             </div>
 
-            <div class="shop-item" id="shop-item-rs" onclick="handleRSClick()">
+            <div class="shop-item" id="shop-item-rs" onclick="handleRSClick(); document.getElementById('buySound').play();">
                 <div class="shop-item-icon-box">
                     <img src="reality-synthesizer.png" alt="" class="shop-item-icon" draggable="false">
                 </div>
@@ -326,7 +328,7 @@
                 <div id="rs-count" class="item-counter-display">0</div>
             </div>
 
-            <div class="shop-item" id="shop-item-bm" onclick="handleBMClick()">
+            <div class="shop-item" id="shop-item-bm" onclick="handleBMClick(); document.getElementById('buySound').play();">
                 <div class="shop-item-icon-box">
                     <img src="biscuit-matrix.png" alt="" class="shop-item-icon" draggable="false">
                 </div>
@@ -343,7 +345,7 @@
                 <div id="bm-count" class="item-counter-display">0</div>
             </div>
 
-            <div class="shop-item" id="shop-item-dm" onclick="handleDMClick()">
+            <div class="shop-item" id="shop-item-dm" onclick="handleDMClick(); document.getElementById('buySound').play();">
                 <div class="shop-item-icon-box">
                     <img src="dough-mension.png" alt="" class="shop-item-icon" draggable="false">
                 </div>
@@ -360,7 +362,7 @@
                 <div id="dm-count" class="item-counter-display">0</div>
             </div>
 
-            <div class="shop-item" id="shop-item-bh" onclick="handleBHClick()">
+            <div class="shop-item" id="shop-item-bh" onclick="handleBHClick(); document.getElementById('buySound').play();">
                 <div class="shop-item-icon-box">
                     <img src="biscuit-hivemind.png" alt="" class="shop-item-icon" draggable="false">
                 </div>
@@ -377,7 +379,7 @@
                 <div id="bh-count" class="item-counter-display">0</div>
             </div>
 
-            <div class="shop-item" id="shop-item-me" onclick="handleMEClick()">
+            <div class="shop-item" id="shop-item-me" onclick="handleMEClick(); document.getElementById('buySound').play();">
                 <div class="shop-item-icon-box">
                     <img src="me.png" alt="" class="shop-item-icon" draggable="false">
                 </div>
@@ -396,11 +398,11 @@
             </div>
         </div>
 
-    <div id="name-popup" class="modal-overlay">
-        <div class="modal-content">
+    <div id="name-popup" class="popup-overlay">
+        <div class="popup-content">
             <h3>Name your bakery</h3>
             <input type="text" id="bakery-name-input" maxlength="40" spellcheck="false" autocomplete="off">
-            <div class="modal-buttons">
+            <div class="popup-buttons">
                 <button onclick="confirmBakeryName()">Confirm</button>
                 <button onclick="randomBakeryName()">Random</button>
                 <button onclick="closeNamePopup()">Cancel</button>
