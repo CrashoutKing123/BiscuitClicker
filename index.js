@@ -1,11 +1,21 @@
 let point = document.querySelector('.point-cost')
+
 let parsedPoint = parseFloat(point.innerHTML)
+
 let ppsText = document.getElementById("pps-text")
+
 let pps = 0;
+
 let totalBiscuitsBaked = 0; 
+
 let devModeActivated = false;
+
+// stops actions while wiping save
 let isWiping = false;
+
 let storeMode = "buy";
+
+// building values
 
 let pointerFingerCount = 0;
 const pointerFingerBaseCost = 15;
@@ -106,6 +116,8 @@ let meCount = 0;
 const meBaseCost = 540000000000000000000000000;
 let meCurrentCost = meBaseCost;
 const mePPSContribution = 510000000000000.0;
+
+// big boi number names
 
 const formats = [
     { value: 1e303, symbol: " centillion" },
@@ -210,6 +222,7 @@ const formats = [
     { value: 1e6, symbol: " million" }
 ];
 
+// formats number for biscuit count display
 function formatNumber(num) {
     if (!isFinite(num) || num >= 1e306) return "Infinity";
     let floorNum = Math.floor(num);
@@ -219,6 +232,7 @@ function formatNumber(num) {
     for (let i = 0; i < formats.length; i++) {
         if (floorNum >= formats[i].value) {
             let divided = floorNum / formats[i].value;
+            // round up when dividing
             if (Math.round(divided * 1000) / 1000 >= 1000) {
                 if (i > 0) {
                     let nextDivided = floorNum / formats[i - 1].value;
@@ -233,9 +247,11 @@ function formatNumber(num) {
     return floorNum.toLocaleString();
 }
 
+// like formatNumber but keeps one decimal
 function formatPPS(num) {
     if (!isFinite(num) || num >= 1e306) return "Infinity";
     if (num < 1000000) {
+        // show decimal for under 1 mil
         return parseFloat(num.toFixed(1)).toLocaleString(undefined, {
             minimumFractionDigits: num % 1 === 0 ? 0 : 1,
             maximumFractionDigits: 1
@@ -258,10 +274,13 @@ function formatPPS(num) {
     return num.toFixed(1);
 }
 
+// store mode (buy / sell toggle)
+
 function setStoreMode(mode) {
     if (isWiping) return;
     storeMode = mode;
     
+    // update active tab
     document.getElementById("store-buy").classList.remove("active");
     document.getElementById("store-sell").classList.remove("active");
     
@@ -271,6 +290,7 @@ function setStoreMode(mode) {
         document.getElementById("store-sell").classList.add("active");
     }
 
+    // apply and remove the "selling look" (dont know how else to describe it)
     let items = document.querySelectorAll(".shop-item");
     items.forEach(item => {
         if (mode === "sell") {
@@ -282,9 +302,12 @@ function setStoreMode(mode) {
     updateShopUI();
 }
 
+// audio stuff (shop item buy is in html tho not the js)
+
 let audioContext = null;
 let audioBuffer = null;
 
+// loads biscuit sound on page load
 async function loadBiscuitSound() {
     audioContext = new AudioContext();
     const response = await fetch('biscuit-sound.mp3');
@@ -294,6 +317,7 @@ async function loadBiscuitSound() {
 
 loadBiscuitSound();
 
+// plays biscuit click sound
 function playBiscuitSound() {
     if (!audioContext || !audioBuffer) return;
     const source = audioContext.createBufferSource();
@@ -301,6 +325,8 @@ function playBiscuitSound() {
     source.connect(audioContext.destination);
     source.start(0);
 }
+
+// building click handlers
 
 function handlePointerFingerClick() {
     if (storeMode === "buy") buyPointerFinger();
@@ -314,6 +340,7 @@ function buyPointerFinger() {
         point.innerHTML = formatNumber(parsedPoint);
         
         pointerFingerCount++;
+        // recalculate cost
         pointerFingerCurrentCost = Math.ceil(pointerFingerBaseCost * Math.pow(1.15, pointerFingerCount));
         
         calculateTotalPPS();
@@ -324,11 +351,13 @@ function buyPointerFinger() {
 function sellPointerFinger() {
     if (isWiping) return;
     if (pointerFingerCount > 0) {
+        // refund 25% of current price
         let refundAmount = Math.floor(pointerFingerCurrentCost * 0.25);
         parsedPoint += refundAmount;
         point.innerHTML = formatNumber(parsedPoint);
 
         pointerFingerCount--;
+        // recalculate cost now that less is owned
         pointerFingerCurrentCost = Math.ceil(pointerFingerBaseCost * Math.pow(1.15, pointerFingerCount));
 
         calculateTotalPPS();
@@ -982,6 +1011,7 @@ function sellME() {
     }
 }
 
+// shop unlock logic
 function checkUnlocks() {
     let pointerFingerElement = document.getElementById("shop-item-pointer-finger");
     if (pointerFingerElement) {
@@ -1164,6 +1194,7 @@ function checkUnlocks() {
     }
 }
 
+// pps calculation
 function calculateTotalPPS() {
     pps = (pointerFingerCount * pointerFingerPPSContribution) + 
           (elderlyManCount * elderlyManPPSContribution) + 
@@ -1189,7 +1220,11 @@ function calculateTotalPPS() {
     ppsText.innerHTML = formatPPS(pps);
 }
 
+// update da shop ui
+
+// refresh price tag
 function updateShopUI() {
+    // calc display price for buildings
     let displayFingerCost = storeMode === "buy" ? pointerFingerCurrentCost : Math.floor(pointerFingerCurrentCost * 0.25);
     let displayElderlyCost = storeMode === "buy" ? elderlyManCurrentCost : Math.floor(elderlyManCurrentCost * 0.25);
     let displayAgCost = storeMode === "buy" ? agriculturalPropertyCurrentCost : Math.floor(agriculturalPropertyCurrentCost * 0.25);
@@ -1211,6 +1246,7 @@ function updateShopUI() {
     let displayBHCost = storeMode === "buy" ? bhCurrentCost : Math.floor(bhCurrentCost * 0.25);
     let displayMECost = storeMode === "buy" ? meCurrentCost : Math.floor(meCurrentCost * 0.25);
 
+    // update price text
     let fingerPriceTag = document.getElementById("pointer-finger-price");
     let fingerCountTag = document.getElementById("pointer-finger-count");
     if (fingerPriceTag) {
@@ -1392,6 +1428,7 @@ function updateShopUI() {
     if (meCountTag) meCountTag.innerHTML = meCount;
 }
 
+// click biscuit
 function incrementPoints() {
     if (isWiping) return;
     parsedPoint += 1;
@@ -1402,6 +1439,9 @@ function incrementPoints() {
     playBiscuitSound();
 }
 
+// smooth biscuit increase
+
+// biscuits dont jump up, they go smoooooth (fun fact: same speed as cookie clicker)
 const ticksPerSecond = 30;
 
 setInterval(() => {
@@ -1416,13 +1456,17 @@ setInterval(() => {
     checkUnlocks(); 
 }, 1000 / ticksPerSecond);
 
+// bakery name stuff
+
 const namePopup = document.getElementById("name-popup");
 const bakeryNameField = document.getElementById("bakery-name-input");
 const bakeryNameLabel = document.getElementById("bakery-name");
 
+// random name generator word list
 const randomPrefixes = ["Magic", "Golden", "Grandma", "Fancy", "Tasty", "Power", "Lucky", "Happy", "Crispy"];
 const randomSuffixes = ["Turtle", "Baker", "Biscuit", "Cookie", "Monster", "Hero", "Star", "Knight", "Captain"];
 
+// fill rename with current
 function openNamePopup() {
     namePopup.style.display = "flex";
     bakeryNameField.value = bakeryNameLabel.innerText;
@@ -1430,10 +1474,13 @@ function openNamePopup() {
     bakeryNameField.select();
 }
 
+// hide rename popup
 function closeNamePopup() {
     namePopup.style.display = "none";
 }
 
+// save bakery name + saysclosesesame
+// show dev mode badge and panel
 function confirmBakeryName() {
     let cleanName = bakeryNameField.value.trim();
     if (cleanName !== "") {
@@ -1443,6 +1490,7 @@ function confirmBakeryName() {
             document.getElementById("dev-badge").style.display = "block";
             document.getElementById("dev-tools-panel").style.display = "block";
         } else {
+            // if name dont end with da secret, disable dev mode
             if (devModeActivated) {
                 document.getElementById("dev-tools-panel").style.display = "none";
             }
@@ -1451,18 +1499,23 @@ function confirmBakeryName() {
     closeNamePopup();
 }
 
+// pick prefix and suffix
 function randomBakeryName() {
     let randomPref = randomPrefixes[Math.floor(Math.random() * randomPrefixes.length)];
     let randomSuff = randomSuffixes[Math.floor(Math.random() * randomSuffixes.length)];
     bakeryNameField.value = randomPref + " " + randomSuff;
 }
 
+// can press enter to confirm
 bakeryNameField.addEventListener("keydown", function(event) {
     if (event.key === "Enter") {
         confirmBakeryName();
     }
 });
 
+// i ♡ dev tools
+
+// add biscuits
 function devAddBiscuits(amount) {
     if (isWiping) return;
     parsedPoint += amount;
@@ -1471,6 +1524,7 @@ function devAddBiscuits(amount) {
     checkUnlocks();
 }
 
+// multiplies biscuits by a certain amount
 function devMultiplyBiscuits(factor) {
     if (isWiping) return;
     parsedPoint *= factor;
@@ -1479,6 +1533,7 @@ function devMultiplyBiscuits(factor) {
     checkUnlocks();
 }
 
+// add 10 of all buildings
 function devMaxUpgrades() {
     if (isWiping) return;
     pointerFingerCount += 10;
@@ -1548,14 +1603,17 @@ function devMaxUpgrades() {
     checkUnlocks();
 }
 
+// reset all
 function devWipeSave() {
     if (isWiping) return;
-    isWiping = true;
+    isWiping = true; // no interactions during wipe
 
+    // hide dev mode
     devModeActivated = false;
     document.getElementById("dev-tools-panel").style.display = "none";
     document.getElementById("dev-badge").style.display = "none";
 
+    // bye bye buildings
     pointerFingerCount = 0;
     elderlyManCount = 0;
     agriculturalPropertyCount = 0;
@@ -1577,6 +1635,7 @@ function devWipeSave() {
     bhCount = 0;
     meCount = 0;
 
+    // reset shop costs
     pointerFingerCurrentCost = pointerFingerBaseCost;
     elderlyManCurrentCost = elderlyManBaseCost;
     agriculturalPropertyCurrentCost = agriculturalPropertyBaseCost;
@@ -1601,6 +1660,7 @@ function devWipeSave() {
     calculateTotalPPS();
     updateShopUI();
 
+    // number go down to 0 not instantly
     let duration = 2000; 
     let intervalTime = 30; 
     let steps = duration / intervalTime;
@@ -1612,31 +1672,38 @@ function devWipeSave() {
 
         if (parsedPoint === 0) {
             clearInterval(wipeInterval);
-            totalBiscuitsBaked = 0;
-            checkUnlocks();
-            isWiping = false;
+            totalBiscuitsBaked = 0; // reset total baked
+            checkUnlocks();         // hide buildings
+            isWiping = false;       // re-enable interactions
         }
     }, intervalTime);
 }
 
+// dev panel drag and drop
+
+// drag the dev panel cuh
 const dragPanel = document.getElementById("dev-tools-panel");
 const dragHeader = document.getElementById("dev-panel-header");
 
-let activeDrag = false;
-let currentX;
-let currentY;
-let initialX;
-let initialY;
-let xOffset = 0;
-let yOffset = 0;
+let activeDrag = false;   // whether currently dragging
+let currentX;             // most recent drag pos on x axis
+let currentY;             // most recent drag pos on y axis
+let initialX;             // mouse x axis on drag start
+let initialY;             // mouse y axis on drag start
+let xOffset = 0;          // x axis offset since drag start
+let yOffset = 0;          // y axis offset since drag start
 
 if (dragHeader) {
+    // start drag on header hold
     dragHeader.addEventListener("mousedown", dragStart);
+    // end drag on mouse release
     document.addEventListener("mouseup", dragEnd);
+    // move panel while dragging
     document.addEventListener("mousemove", drag);
 }
 
 function dragStart(e) {
+    // where mouse start
     initialX = e.clientX - xOffset;
     initialY = e.clientY - yOffset;
     if (e.target === dragHeader) {
@@ -1645,6 +1712,7 @@ function dragStart(e) {
 }
 
 function dragEnd() {
+    // lock last pos as new for next drag
     initialX = currentX;
     initialY = currentY;
     activeDrag = false;
@@ -1652,7 +1720,7 @@ function dragEnd() {
 
 function drag(e) {
     if (activeDrag) {
-        e.preventDefault();
+        e.preventDefault(); // no text while dragging
         currentX = e.clientX - initialX;
         currentY = e.clientY - initialY;
         xOffset = currentX;
@@ -1661,8 +1729,10 @@ function drag(e) {
     }
 }
 
+// move panel to coordinates of mouse while dragging
 function setTranslate(xPos, yPos, el) {
     el.style.transform = `translate3d(${xPos}px, ${yPos}px, 0)`;
 }
 
+// shop price update ting
 updateShopUI();

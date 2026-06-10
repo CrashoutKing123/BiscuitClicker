@@ -1,13 +1,17 @@
+/* Import Merriweather from Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&display=swap');
+
+/* base */
 
 body {
     margin: 0;
     padding: 0;
     height: 100vh;
     color: white;
-    user-select: none;
+    user-select: none;          /* no text selection during biscuit clicks */
     font-family: 'Merriweather', Georgia, serif;
-    overflow: hidden;
+    overflow: hidden;           /* no scrollbars */
+    /* stripped bg */
     background-image: repeating-linear-gradient(
         90deg,
         #1a507a,
@@ -18,6 +22,7 @@ body {
     background-size: 40px 100%;
 }
 
+/* three-column layout */
 .main {
     display: grid;
     grid-template-columns: 577px 16px 1000px 16px 315px;
@@ -25,12 +30,15 @@ body {
     height: 100vh;
 }
 
+/* left section: biscuit click area */
+
 .left-section {
     position: relative;
     box-shadow: inset 0 0 100px rgba(0,0,0,0.6);
     box-sizing: border-box;
 }
 
+/* semi-transparent bg */
 .left-section::before {
     content: "";
     position: absolute;
@@ -43,6 +51,7 @@ body {
     pointer-events: none;
 }
 
+/* bakery name label */
 .bakery-name-container {
     position: absolute;
     left: 50%;
@@ -60,6 +69,7 @@ body {
     transform: translate(-50%, var(--name-up-down));
 }
 
+/* name container highlight */
 .bakery-name-container:hover {
     border-color: #e2b25c;
     background-color: rgba(0, 0, 0, 0.6);
@@ -69,6 +79,7 @@ body {
     font-weight: 700;
 }
 
+/* dev mode badge */
 .dev-mode-badge {
     display: none;
     position: absolute;
@@ -87,6 +98,7 @@ body {
     z-index: 6;
 }
 
+/* shadow thing behind biscuits and biscuits per second */
 .left-content::before {
     content: "";
     position: absolute;
@@ -97,6 +109,7 @@ body {
     background-color: rgba(0, 0, 0, 0.4);
     top: 15%; 
     bottom: calc(79% + 20px - 18px); 
+    /* white fade lines */
     background-image: 
         linear-gradient(90deg, transparent, rgba(255,255,255,0.1) 20%, rgba(255,255,255,0.1) 80%, transparent),
         linear-gradient(90deg, transparent, rgba(255,255,255,0.1) 20%, rgba(255,255,255,0.1) 80%, transparent);
@@ -105,6 +118,7 @@ body {
     background-repeat: no-repeat;
 }
 
+/* biscuit count */
 .left-content h3 {
     position: absolute;
     left: 50%;
@@ -119,6 +133,7 @@ body {
     top: 15%; 
 }
 
+/* per second label */
 .left-content p.biscuit-rate {
     position: absolute;
     left: 50%;
@@ -130,10 +145,11 @@ body {
     white-space: nowrap;
     z-index: 2;
     top: 21%; 
-    --rate-up-down: -20px; 
+    --rate-up-down: -20px;
     transform: translate(-50%, var(--rate-up-down));
 }
 
+/* center biscuit horizontally */
 .biscuit-container {
     position: absolute;
     left: 50%;
@@ -152,19 +168,25 @@ body {
     cursor: pointer;
 }
 
+/* scale-up on click */
 .biscuit-image:active {
     opacity: 0.8;
     transform: scale(1.02);
 }
 
+/* middle section: upgrade panel */
+
+/* layout for middle section */
 .middle-section {
     position: relative;
     padding: 20px;
     box-sizing: border-box;
 }
 
+/* dev tools */
+
 .dev-panel {
-    display: none;
+    display: none; 
     position: absolute; 
     top: 100px;
     left: 300px;
@@ -177,6 +199,7 @@ body {
     z-index: 999;
 }
 
+/* dev tools draggable */
 .dev-panel-header {
     background-color: #333;
     color: #ccc;
@@ -191,6 +214,7 @@ body {
     user-select: none;
 }
 
+/* dev tool buttons */
 .dev-panel-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -213,6 +237,7 @@ body {
     border-color: #666;
 }
 
+/* red wipe save button */
 .dev-panel-grid button.wipe-btn {
     background-color: #b03030;
     border-color: #c23838;
@@ -222,15 +247,18 @@ body {
     background-color: #c23838;
 }
 
+/* right section: store */
+
 .right-section {
     position: relative;
     display: flex;
     flex-direction: column;
-    min-height: 0;
+    min-height: 0; 
     background-color: rgba(0, 0, 0, 0.2);
     box-shadow: inset 0 0 50px rgba(0,0,0,0.5);
 }
 
+/* scrollable shop */
 .store-content {
     flex: 1;
     min-height: 0;
@@ -240,6 +268,7 @@ body {
     scrollbar-color: rgba(255,255,255,0.4) transparent;
 }
 
+/* scrollbar */
 .store-content::-webkit-scrollbar {
     width: 8px;
 }
@@ -253,14 +282,19 @@ body {
     border-radius: 999px;
 }
 
+/* the separators */
+
 .separator {
     background-color: #3c2415;
     z-index: 3;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
+/* bakery name popup */
+
+/* sorta transparent background */
 .popup-overlay {
-    display: none;
+    display: none; 
     position: fixed;
     top: 0;
     left: 0;
@@ -272,6 +306,7 @@ body {
     align-items: center;
 }
 
+/* popup card */
 .popup-content {
     background-color: #2c1a10;
     border: 4px solid #54341c;
@@ -303,6 +338,7 @@ body {
     outline: none;
 }
 
+/* gold border highlight */
 .popup-content input:focus {
     border-color: #e2b25c;
 }
@@ -332,6 +368,8 @@ body {
     border-color: #e2b25c;
 }
 
+/* store header and tabs */
+
 .shop-header {
     text-align: center;
     font-size: 24px;
@@ -344,6 +382,7 @@ body {
     letter-spacing: 1px;
 }
 
+/* container for buy/sell tabs */
 .store-selector {
     display: flex;
     justify-content: center;
@@ -366,16 +405,19 @@ body {
     transition: color 0.1s, text-shadow 0.1s;
 }
 
+/* buy tab with white glow */
 .store-tab.active {
     color: #fff;
     text-shadow: 0px 0px 5px rgba(255, 255, 255, 0.6);
 }
 
+/* sell tab with red glow */
 #store-sell.active {
     color: #e54e4e;
     text-shadow: 0px 0px 5px rgba(229, 78, 78, 0.6);
 }
 
+/* red tag when selling */
 .shop-item.selling-active #pointer-finger-price,
 .shop-item.selling-active #elderly-man-price,
 .shop-item.selling-active #agricultural-property-price,
@@ -399,12 +441,15 @@ body {
     color: #e54e4e !important;
 }
 
+/* red tint when selling */
 .shop-item.selling-active:hover {
     background-color: rgba(229, 78, 78, 0.05);
 }
 
+/* shop items */
+ 
 .shop-item {
-    display: none; 
+    display: none;
     position: relative;
     height: 64px;
     width: 100%;
@@ -415,6 +460,7 @@ body {
     box-sizing: border-box;
 }
 
+/* makes building visible */
 .shop-item.visible {
     display: block; 
 }
@@ -424,6 +470,7 @@ body {
     box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.1);
 }
 
+/* icon box */
 .shop-item-icon-box {
     position: absolute;
     left: 4px;
@@ -436,17 +483,20 @@ body {
     border-radius: 4px;
 }
 
+/* shop item icon black until purchased */
 .shop-item-icon {
     width: 100%;
     height: 100%;
     object-fit: contain;
-    filter: brightness(0); 
+    filter: brightness(0);
 }
 
+/* restore color of shop item icon */
 .shop-item.fully-unlocked .shop-item-icon {
     filter: none; 
 }
 
+/* text next to shop item icon */
 .shop-item-details {
     position: absolute;
     left: 66px;
@@ -461,18 +511,22 @@ body {
     text-shadow: 1px 1px 1px #000;
 }
 
+/* mystery name */
 .item-name .real-name { display: none; }
 .item-name .mystery-name { display: inline; color: #b3b3b3; font-style: italic; }
 
+/* switch to real name */
 .shop-item.fully-unlocked .item-name .real-name { display: inline; }
 .shop-item.fully-unlocked .item-name .mystery-name { display: none; }
 
+/* row with price and mini biscuit icon */
 .item-cost-row {
     display: flex;
     align-items: center;
     margin-top: 2px;
 }
 
+/* mini biscuit icon */
 .mini-biscuit-icon {
     width: 16px;
     height: 16px;
@@ -482,6 +536,7 @@ body {
     filter: drop-shadow(0px 1px 1px rgba(0,0,0,0.6));
 }
 
+/* price tag elements */
 #pointer-finger-price, #elderly-man-price, #agricultural-property-price, #pit-price, #assemblyLine-price, #vault-price, #shrine-price, #witch-castle-price, #space-shuttle-price, #tm-price, #wh-price, #stb-price, #qbc-price, #ck-price, #gb-price, #rs-price, #bm-price, #dm-price, #bh-price, #me-price {
     font-family: Arial, sans-serif;
     font-size: 13px;
@@ -492,10 +547,12 @@ body {
     transition: color 0.1s ease;
 }
 
+/* green tag when affordable */
 .shop-item .affordable {
     color: #6ed175 !important;
 }
 
+/* how many owned */
 .item-counter-display {
     display: none; 
     position: absolute;
@@ -509,10 +566,12 @@ body {
     text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.8);
 }
 
+/* reveal counter */
 .shop-item.fully-unlocked .item-counter-display {
     display: block; 
 }
 
+/* make brighter on hover */
 .shop-item:hover .item-counter-display {
     color: rgba(255, 255, 255, 1);
 }

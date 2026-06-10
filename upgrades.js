@@ -4,7 +4,11 @@ const UPGRADE_UNLOCK_COUNTS = [1, 5, 25, 50, 100];
 const CLICK_UPGRADE_COSTS = [50, 500, 5000, 500000, 50000000];
 const CLICK_UNLOCK_BAKED = [1, 100, 1000, 100000, 10000000];
 
+// per click
+
 let clickPower = 1;
+
+// base upgrade levels
 
 let upgradeLevel = {
     click: 0, pointerFinger: 0, elderlyMan: 0, agriculturalProperty: 0,
@@ -13,12 +17,16 @@ let upgradeLevel = {
     gb: 0, rs: 0, bm: 0, dm: 0, bh: 0, me: 0,
 };
 
+// biscuits per second multipliers
+
 let ppsMultipliers = {
     pointerFinger: 1, elderlyMan: 1, agriculturalProperty: 1,
     pit: 1, assemblyLine: 1, vault: 1, shrine: 1, witchCastle: 1,
     spaceShuttle: 1, tm: 1, wh: 1, stb: 1, qbc: 1, ck: 1,
     gb: 1, rs: 1, bm: 1, dm: 1, bh: 1, me: 1,
 };
+
+// configuration for all upgrades
 
 const UPGRADE_CONFIGS = [
     { id: 'click',                name: 'Click Power',             img: 'b4842fc5e82ce3fd5d6fb074a720f938586a7837-removebg-preview.png', getCost: (t) => CLICK_UPGRADE_COSTS[t], getUnlockCount: (t) => CLICK_UNLOCK_BAKED[t], getCurrentCount: () => totalBiscuitsBaked },
