@@ -202,7 +202,9 @@
 }
 
 .upgrade-empty-icon {
-    font-size: 36px;
+    width: 63px;
+    height: 63px;
+    object-fit: contain;
     opacity: 0.4;
 }
 

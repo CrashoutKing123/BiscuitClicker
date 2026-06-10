@@ -140,7 +140,7 @@ function renderUpgradePanel() {
     if (!anyVisible) {
         panel.innerHTML = `
             <div class="upgrade-empty">
-                <div class="upgrade-empty-icon">🍪</div>
+                <img src="b4842fc5e82ce3fd5d6fb074a720f938586a7837-removebg-preview.png" class="upgrade-empty-icon" draggable="false">
                 <p>No upgrades available yet.</p>
                 <span>Buy buildings to unlock upgrades.</span>
             </div>`;
